@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'views/test_features/test_location.dart';
+import 'package:provider/provider.dart';
+import 'package:weather/views/home_screen/CitySelectionPage.dart';
+import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
 void main() {
   runApp(const WeatherApp());
@@ -11,9 +12,12 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: TestLocationView(),
+    return ListenableProvider(
+      create: (context) => CityProvider(),
+      builder: (context, child) => const MaterialApp(
+        home: Scaffold(
+          body: CitySelectionPage(),
+        ),
       ),
     );
   }
