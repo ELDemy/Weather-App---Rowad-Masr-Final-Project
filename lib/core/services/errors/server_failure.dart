@@ -22,8 +22,7 @@ class ServerFailure extends Failure {
       case DioExceptionType.badCertificate:
         return ServerFailure('Bad SSL certificate!');
       case DioExceptionType.badResponse:
-        return ServerFailure(
-            _handleBadResponse(dioException.response?.statusCode));
+        return ServerFailure(_handleBadResponse(dioException));
       case DioExceptionType.cancel:
         return ServerFailure('Request to server was cancelled');
       case DioExceptionType.connectionError:
@@ -35,19 +34,12 @@ class ServerFailure extends Failure {
     }
   }
 
-  // Simplified map for handling common HTTP status codes
-  static String _handleBadResponse(int? statusCode) {
-    const statusCodeMessages = {
-      400: 'Bad request. Please check your input.',
-      401: 'Unauthorized. Please log in again.',
-      403: 'Forbidden. You don’t have permission to access this resource.',
-      404: 'Not found. The resource you’re looking for doesn’t exist.',
-      500: 'Internal server error. Please try again later.',
-      503: 'Service unavailable. Please try again later.',
-    };
-
-    return statusCodeMessages[statusCode] ??
-        'Received unexpected status code: $statusCode';
+  static String _handleBadResponse(DioException e) {
+    if (e.response?.data != null) {
+      return e.response?.data['message'];
+    } else {
+      return 'Unexpected error!! Please contact the app creator';
+    }
   }
 
   // Check if Dio error wraps a SocketException

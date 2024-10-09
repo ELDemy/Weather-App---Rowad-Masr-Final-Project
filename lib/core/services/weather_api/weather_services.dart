@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:weather/core/models/weather_model/WeatherModel.dart';
+import 'package:weather/core/services/errors/server_failure.dart';
 
 class WeatherService {
   final Dio dio = Dio();
@@ -10,6 +11,7 @@ class WeatherService {
   String baseUrl = "http://api.weatherapi.com/v1";
 
   String? errMsg;
+
   Future<WeatherModel> getWeather(cityName) async {
     try {
       Response response = await dio.get(
@@ -19,8 +21,8 @@ class WeatherService {
       WeatherModel weatherModel = WeatherModel.fromJson(response.data);
       return weatherModel;
     } on DioException catch (e) {
-      String? errMsg = e.response?.data['error']['message'];
-      throw (errMsg ?? e);
+      var x = ServerFailure.fromDioException(e);
+      throw (x.errMsg);
     } catch (e) {
       rethrow;
     }
