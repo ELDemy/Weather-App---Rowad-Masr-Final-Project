@@ -215,7 +215,7 @@ class CityWeatherScreen extends StatelessWidget {
                               children: [
                                 BackdropFilter(
                                   filter:
-                                  ImageFilter.blur(sigmaX: 10, sigmaY: 51),
+                                      ImageFilter.blur(sigmaX: 10, sigmaY: 51),
                                   child: Container(
                                     height: 180,
                                     padding: EdgeInsets.all(5),
@@ -235,7 +235,7 @@ class CityWeatherScreen extends StatelessWidget {
                                                 style: TextStyle(
                                                     color: Colors.white54,
                                                     fontWeight:
-                                                    FontWeight.w600),
+                                                        FontWeight.w600),
                                               ),
                                             ],
                                           ),
@@ -243,57 +243,57 @@ class CityWeatherScreen extends StatelessWidget {
                                         Flexible(
                                             child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: SleekCircularSlider(
                                                   min: 0,
                                                   max: 50,
                                                   initialValue:
-                                                  cityWeather[cityIndex]
-                                                  ['cityVisi']!
-                                                      .toDouble(),
+                                                      cityWeather[cityIndex]
+                                                              ['cityVisi']!
+                                                          .toDouble(),
                                                   appearance:
-                                                  CircularSliderAppearance(
-                                                      infoProperties:
-                                                      InfoProperties(
-                                                        mainLabelStyle: TextStyle(
-                                                            color: Colors
-                                                                .white,
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .w700),
-                                                        modifier:
-                                                            (percentage) {
-                                                          final roundedValue =
-                                                          percentage
-                                                              .ceil()
-                                                              .toInt()
-                                                              .toString();
-                                                          return '$roundedValue km';
-                                                        },
-                                                      ),
-                                                      animationEnabled:
-                                                      true,
-                                                      angleRange: 360,
-                                                      startAngle: 90,
-                                                      size: 140,
-                                                      customWidths:
-                                                      CustomSliderWidths(
-                                                          progressBarWidth:
-                                                          5,
-                                                          handlerSize:
-                                                          2),
-                                                      customColors:
-                                                      CustomSliderColors(
-                                                          hideShadow:
-                                                          true,
-                                                          trackColor:
-                                                          Colors
-                                                              .white54,
-                                                          progressBarColors: [
-                                                            Colors.red,
-                                                            Colors.blueGrey
-                                                          ])),
+                                                      CircularSliderAppearance(
+                                                          infoProperties:
+                                                              InfoProperties(
+                                                            mainLabelStyle: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                            modifier:
+                                                                (percentage) {
+                                                              final roundedValue =
+                                                                  percentage
+                                                                      .ceil()
+                                                                      .toInt()
+                                                                      .toString();
+                                                              return '$roundedValue km';
+                                                            },
+                                                          ),
+                                                          animationEnabled:
+                                                              true,
+                                                          angleRange: 360,
+                                                          startAngle: 90,
+                                                          size: 140,
+                                                          customWidths:
+                                                              CustomSliderWidths(
+                                                                  progressBarWidth:
+                                                                      5,
+                                                                  handlerSize:
+                                                                      2),
+                                                          customColors:
+                                                              CustomSliderColors(
+                                                                  hideShadow:
+                                                                      true,
+                                                                  trackColor:
+                                                                      Colors
+                                                                          .white54,
+                                                                  progressBarColors: [
+                                                                Colors.red,
+                                                                Colors.blueGrey
+                                                              ])),
                                                 ))),
                                       ],
                                     ),
@@ -312,7 +312,7 @@ class CityWeatherScreen extends StatelessWidget {
                     Flexible(
                       child: Padding(
                         padding:
-                        const EdgeInsets.only(left: 22, right: 6, top: 5),
+                            const EdgeInsets.only(left: 22, right: 6, top: 5),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
@@ -322,7 +322,7 @@ class CityWeatherScreen extends StatelessWidget {
                               children: [
                                 BackdropFilter(
                                   filter:
-                                  ImageFilter.blur(sigmaX: 10, sigmaY: 51),
+                                      ImageFilter.blur(sigmaX: 10, sigmaY: 51),
                                   child: Container(
                                     height: 180,
                                     padding: EdgeInsets.all(5),
@@ -342,7 +342,7 @@ class CityWeatherScreen extends StatelessWidget {
                                                 style: TextStyle(
                                                     color: Colors.white54,
                                                     fontWeight:
-                                                    FontWeight.w600),
+                                                        FontWeight.w600),
                                               ),
                                             ],
                                           ),
@@ -350,73 +350,73 @@ class CityWeatherScreen extends StatelessWidget {
                                         Flexible(
                                             child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: SleekCircularSlider(
                                                   min: -100,
                                                   max: 100,
                                                   appearance:
-                                                  CircularSliderAppearance(
-                                                      angleRange: 360,
-                                                      spinnerMode: false,
-                                                      infoProperties:
-                                                      InfoProperties(
-                                                          mainLabelStyle: TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize:
-                                                              22,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w600),
-                                                          modifier:
-                                                              (percentage) {
-                                                            final roundedValue = percentage
-                                                                .ceil()
-                                                                .toInt()
-                                                                .toString();
-                                                            return '$roundedValue' +
-                                                                '\u00B0';
-                                                          },
-                                                          bottomLabelText:
-                                                          "Feels Like",
-                                                          bottomLabelStyle: TextStyle(
-                                                              letterSpacing:
-                                                              0.1,
-                                                              fontSize:
-                                                              14,
-                                                              height:
-                                                              1.5,
-                                                              color:
-                                                              Colors
-                                                                  .white70,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w700)),
-                                                      animationEnabled:
-                                                      true,
-                                                      size: 140,
-                                                      customWidths:
-                                                      CustomSliderWidths(
-                                                          progressBarWidth:
-                                                          8,
-                                                          handlerSize:
-                                                          3),
-                                                      customColors:
-                                                      CustomSliderColors(
-                                                          hideShadow:
-                                                          true,
-                                                          trackColor:
-                                                          Colors
-                                                              .white54,
-                                                          progressBarColors: [
-                                                            Colors
-                                                                .amber[600]!
-                                                                .withOpacity(
-                                                                0.54),
-                                                            Colors.blueGrey
-                                                                .withOpacity(
-                                                                0.54)
-                                                          ])),
+                                                      CircularSliderAppearance(
+                                                          angleRange: 360,
+                                                          spinnerMode: false,
+                                                          infoProperties:
+                                                              InfoProperties(
+                                                                  mainLabelStyle: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          22,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
+                                                                  modifier:
+                                                                      (percentage) {
+                                                                    final roundedValue = percentage
+                                                                        .ceil()
+                                                                        .toInt()
+                                                                        .toString();
+                                                                    return '$roundedValue' +
+                                                                        '\u00B0';
+                                                                  },
+                                                                  bottomLabelText:
+                                                                      "Feels Like",
+                                                                  bottomLabelStyle: TextStyle(
+                                                                      letterSpacing:
+                                                                          0.1,
+                                                                      fontSize:
+                                                                          14,
+                                                                      height:
+                                                                          1.5,
+                                                                      color:
+                                                                          Colors
+                                                                              .white70,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700)),
+                                                          animationEnabled:
+                                                              true,
+                                                          size: 140,
+                                                          customWidths:
+                                                              CustomSliderWidths(
+                                                                  progressBarWidth:
+                                                                      8,
+                                                                  handlerSize:
+                                                                      3),
+                                                          customColors:
+                                                              CustomSliderColors(
+                                                                  hideShadow:
+                                                                      true,
+                                                                  trackColor:
+                                                                      Colors
+                                                                          .white54,
+                                                                  progressBarColors: [
+                                                                Colors
+                                                                    .amber[600]!
+                                                                    .withOpacity(
+                                                                        0.54),
+                                                                Colors.blueGrey
+                                                                    .withOpacity(
+                                                                        0.54)
+                                                              ])),
                                                 ))),
                                       ],
                                     ),
@@ -431,7 +431,7 @@ class CityWeatherScreen extends StatelessWidget {
                     Flexible(
                       child: Padding(
                         padding:
-                        const EdgeInsets.only(left: 6, right: 22, top: 5),
+                            const EdgeInsets.only(left: 6, right: 22, top: 5),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
@@ -441,7 +441,7 @@ class CityWeatherScreen extends StatelessWidget {
                               children: [
                                 BackdropFilter(
                                   filter:
-                                  ImageFilter.blur(sigmaX: 10, sigmaY: 51),
+                                      ImageFilter.blur(sigmaX: 10, sigmaY: 51),
                                   child: Container(
                                     height: 180,
                                     padding: EdgeInsets.all(5),
@@ -461,7 +461,7 @@ class CityWeatherScreen extends StatelessWidget {
                                                 style: TextStyle(
                                                     color: Colors.white54,
                                                     fontWeight:
-                                                    FontWeight.w600),
+                                                        FontWeight.w600),
                                               ),
                                             ],
                                           ),
@@ -469,58 +469,58 @@ class CityWeatherScreen extends StatelessWidget {
                                         Flexible(
                                             child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: SleekCircularSlider(
                                                   min: 0,
                                                   max: 2000,
                                                   appearance:
-                                                  CircularSliderAppearance(
-                                                      infoProperties: InfoProperties(
-                                                          mainLabelStyle: TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize: 22,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w600),
-                                                          bottomLabelText:
-                                                          "hPa",
-                                                          bottomLabelStyle: TextStyle(
-                                                              fontSize: 14,
-                                                              height: 1.5,
-                                                              color: Colors
-                                                                  .white70,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w700)),
-                                                      animationEnabled:
-                                                      true,
-                                                      size: 140,
-                                                      customWidths:
-                                                      CustomSliderWidths(
-                                                          progressBarWidth:
-                                                          7,
-                                                          handlerSize:
-                                                          6),
-                                                      customColors:
-                                                      CustomSliderColors(
-                                                          hideShadow:
-                                                          true,
-                                                          trackColor:
-                                                          Colors
-                                                              .white54,
-                                                          progressBarColors: [
-                                                            Colors.white
-                                                                .withOpacity(
-                                                                1),
-                                                            Colors.white
-                                                                .withOpacity(
-                                                                0.54),
-                                                            Colors
-                                                                .transparent,
-                                                            Colors
-                                                                .transparent
-                                                          ])),
+                                                      CircularSliderAppearance(
+                                                          infoProperties: InfoProperties(
+                                                              mainLabelStyle: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 22,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600),
+                                                              bottomLabelText:
+                                                                  "hPa",
+                                                              bottomLabelStyle: TextStyle(
+                                                                  fontSize: 14,
+                                                                  height: 1.5,
+                                                                  color: Colors
+                                                                      .white70,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700)),
+                                                          animationEnabled:
+                                                              true,
+                                                          size: 140,
+                                                          customWidths:
+                                                              CustomSliderWidths(
+                                                                  progressBarWidth:
+                                                                      7,
+                                                                  handlerSize:
+                                                                      6),
+                                                          customColors:
+                                                              CustomSliderColors(
+                                                                  hideShadow:
+                                                                      true,
+                                                                  trackColor:
+                                                                      Colors
+                                                                          .white54,
+                                                                  progressBarColors: [
+                                                                Colors.white
+                                                                    .withOpacity(
+                                                                        1),
+                                                                Colors.white
+                                                                    .withOpacity(
+                                                                        0.54),
+                                                                Colors
+                                                                    .transparent,
+                                                                Colors
+                                                                    .transparent
+                                                              ])),
                                                 ))),
                                       ],
                                     ),
@@ -539,7 +539,7 @@ class CityWeatherScreen extends StatelessWidget {
                     Flexible(
                       child: Padding(
                         padding:
-                        const EdgeInsets.only(left: 22, right: 6, top: 5),
+                            const EdgeInsets.only(left: 22, right: 6, top: 5),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
@@ -549,7 +549,7 @@ class CityWeatherScreen extends StatelessWidget {
                               children: [
                                 BackdropFilter(
                                   filter:
-                                  ImageFilter.blur(sigmaX: 10, sigmaY: 51),
+                                      ImageFilter.blur(sigmaX: 10, sigmaY: 51),
                                   child: Container(
                                     height: 180,
                                     padding: EdgeInsets.all(5),
@@ -569,7 +569,7 @@ class CityWeatherScreen extends StatelessWidget {
                                                 style: TextStyle(
                                                     color: Colors.white54,
                                                     fontWeight:
-                                                    FontWeight.w600),
+                                                        FontWeight.w600),
                                               ),
                                             ],
                                           ),
@@ -577,65 +577,65 @@ class CityWeatherScreen extends StatelessWidget {
                                         Flexible(
                                             child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 child: SleekCircularSlider(
                                                   min: 0,
                                                   max: 100,
                                                   appearance:
-                                                  CircularSliderAppearance(
-                                                      infoProperties:
-                                                      InfoProperties(
-                                                          mainLabelStyle: TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize:
-                                                              22,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w600),
-                                                          modifier:
-                                                              (percentage) {
-                                                            final roundedValue = percentage
-                                                                .ceil()
-                                                                .toInt()
-                                                                .toString();
-                                                            return '$roundedValue%';
-                                                          },
-                                                          bottomLabelText:
-                                                          "Humidity",
-                                                          bottomLabelStyle: TextStyle(
-                                                              letterSpacing:
-                                                              0.1,
-                                                              fontSize:
-                                                              14,
-                                                              height:
-                                                              1.5,
-                                                              color:
-                                                              Colors
-                                                                  .white70,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w700)),
-                                                      animationEnabled:
-                                                      true,
-                                                      size: 140,
-                                                      customWidths:
-                                                      CustomSliderWidths(
-                                                          progressBarWidth:
-                                                          8,
-                                                          handlerSize:
-                                                          3),
-                                                      customColors:
-                                                      CustomSliderColors(
-                                                          hideShadow:
-                                                          true,
-                                                          trackColor:
-                                                          Colors
-                                                              .white54,
-                                                          progressBarColors: [
-                                                            Colors.blueGrey,
-                                                            Colors.black54
-                                                          ])),
+                                                      CircularSliderAppearance(
+                                                          infoProperties:
+                                                              InfoProperties(
+                                                                  mainLabelStyle: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          22,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
+                                                                  modifier:
+                                                                      (percentage) {
+                                                                    final roundedValue = percentage
+                                                                        .ceil()
+                                                                        .toInt()
+                                                                        .toString();
+                                                                    return '$roundedValue%';
+                                                                  },
+                                                                  bottomLabelText:
+                                                                      "Humidity",
+                                                                  bottomLabelStyle: TextStyle(
+                                                                      letterSpacing:
+                                                                          0.1,
+                                                                      fontSize:
+                                                                          14,
+                                                                      height:
+                                                                          1.5,
+                                                                      color:
+                                                                          Colors
+                                                                              .white70,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700)),
+                                                          animationEnabled:
+                                                              true,
+                                                          size: 140,
+                                                          customWidths:
+                                                              CustomSliderWidths(
+                                                                  progressBarWidth:
+                                                                      8,
+                                                                  handlerSize:
+                                                                      3),
+                                                          customColors:
+                                                              CustomSliderColors(
+                                                                  hideShadow:
+                                                                      true,
+                                                                  trackColor:
+                                                                      Colors
+                                                                          .white54,
+                                                                  progressBarColors: [
+                                                                Colors.blueGrey,
+                                                                Colors.black54
+                                                              ])),
                                                 ))),
                                       ],
                                     ),
@@ -651,7 +651,7 @@ class CityWeatherScreen extends StatelessWidget {
                     Flexible(
                       child: Padding(
                         padding:
-                        const EdgeInsets.only(left: 22, right: 6, top: 5),
+                            const EdgeInsets.only(left: 22, right: 6, top: 5),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
@@ -661,7 +661,7 @@ class CityWeatherScreen extends StatelessWidget {
                               children: [
                                 BackdropFilter(
                                   filter:
-                                  ImageFilter.blur(sigmaX: 10, sigmaY: 51),
+                                      ImageFilter.blur(sigmaX: 10, sigmaY: 51),
                                   child: Container(
                                     height: 180,
                                     padding: EdgeInsets.all(5),
@@ -681,7 +681,7 @@ class CityWeatherScreen extends StatelessWidget {
                                                 style: TextStyle(
                                                     color: Colors.white54,
                                                     fontWeight:
-                                                    FontWeight.w600),
+                                                        FontWeight.w600),
                                               ),
                                             ],
                                           ),
@@ -693,9 +693,9 @@ class CityWeatherScreen extends StatelessWidget {
                                               min: 0,
                                               max: 11,
                                               initialValue:
-                                              5, // Make sure to provide a valid initial value.
+                                                  5, // Make sure to provide a valid initial value.
                                               appearance:
-                                              CircularSliderAppearance(
+                                                  CircularSliderAppearance(
                                                 infoProperties: InfoProperties(
                                                   mainLabelStyle: TextStyle(
                                                     color: Colors.white,
@@ -704,10 +704,10 @@ class CityWeatherScreen extends StatelessWidget {
                                                   ),
                                                   modifier: (percentage) {
                                                     final roundedValue =
-                                                    percentage
-                                                        .ceil()
-                                                        .toInt()
-                                                        .toString();
+                                                        percentage
+                                                            .ceil()
+                                                            .toInt()
+                                                            .toString();
                                                     return '$roundedValue';
                                                   },
                                                   bottomLabelText: "UV ",
@@ -722,12 +722,12 @@ class CityWeatherScreen extends StatelessWidget {
                                                 animationEnabled: true,
                                                 size: 140,
                                                 customWidths:
-                                                CustomSliderWidths(
+                                                    CustomSliderWidths(
                                                   progressBarWidth: 8,
                                                   handlerSize: 3,
                                                 ),
                                                 customColors:
-                                                CustomSliderColors(
+                                                    CustomSliderColors(
                                                   hideShadow: true,
                                                   trackColor: Colors.white54,
                                                   progressBarColors: [
