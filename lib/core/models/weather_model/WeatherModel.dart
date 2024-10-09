@@ -1,7 +1,7 @@
-import 'Alerts.dart';
-import 'Current.dart';
-import 'Forecast.dart';
-import 'Location.dart';
+import 'helper_classes/Alerts.dart';
+import 'helper_classes/Current.dart';
+import 'helper_classes/Forecast.dart';
+import 'helper_classes/Location.dart';
 
 class WeatherModel {
   WeatherModel({

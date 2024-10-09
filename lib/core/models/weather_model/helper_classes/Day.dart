@@ -1,4 +1,4 @@
-import 'Condition2.dart';
+import 'Condition.dart';
 
 class Day {
   Day({
@@ -44,7 +44,7 @@ class Day {
     dailyWillItSnow = json['daily_will_it_snow'];
     dailyChanceOfSnow = json['daily_chance_of_snow'];
     condition2 = json['condition2'] != null
-        ? Condition2.fromJson(json['condition2'])
+        ? Condition.fromJson(json['condition2'])
         : null;
     uv = json['uv'];
   }
@@ -66,7 +66,7 @@ class Day {
   num? dailyChanceOfRain;
   num? dailyWillItSnow;
   num? dailyChanceOfSnow;
-  Condition2? condition2;
+  Condition? condition2;
   num? uv;
 
   Map<String, dynamic> toJson() {

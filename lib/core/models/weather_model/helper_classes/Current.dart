@@ -1,5 +1,5 @@
-import 'Condition1.dart';
 import 'AirQuality.dart';
+import 'Condition.dart';
 
 class Current {
   Current({
@@ -42,7 +42,7 @@ class Current {
     tempF = json['temp_f'];
     isDay = json['is_day'];
     condition1 = json['condition1'] != null
-        ? Condition1.fromJson(json['condition1'])
+        ? Condition.fromJson(json['condition1'])
         : null;
     windMph = json['wind_mph'];
     windKph = json['wind_kph'];
@@ -76,7 +76,7 @@ class Current {
   num? tempC;
   num? tempF;
   num? isDay;
-  Condition1? condition1;
+  Condition? condition1;
   num? windMph;
   num? windKph;
   num? windDegree;
