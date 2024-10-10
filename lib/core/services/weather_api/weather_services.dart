@@ -7,6 +7,7 @@ import 'package:weather/core/services/errors/location_failure.dart';
 import 'package:weather/core/services/errors/server_failure.dart';
 import 'package:weather/core/services/location/get_location.dart';
 
+
 class WeatherService {
   final Dio dio = Dio();
 
