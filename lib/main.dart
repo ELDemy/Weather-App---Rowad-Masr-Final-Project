@@ -4,8 +4,9 @@ import 'package:weather/core/services/weather_api/weather_services.dart';
 import 'package:weather/views/home_screen/CitySelectionPage.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
-void main() async {
-  print(await WeatherService().getWeather("cityName"));
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  WeatherService().testWeatherService();
   runApp(const WeatherApp());
 }
 

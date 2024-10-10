@@ -18,7 +18,7 @@ class _TestLocationViewState extends State<TestLocationView> {
   }
 
   updateCity() async {
-    city = await (Location().getCurrentCity()) as String;
+    city = await (MyLocation().getCurrentCity()) as String;
 
     print("city: $city");
     setState(() {});
