@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather/core/services/weather_api/weather_services.dart';
 import 'package:weather/views/home_screen/CitySelectionPage.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  WeatherService().testWeatherService();
   runApp(const WeatherApp());
 }
 
