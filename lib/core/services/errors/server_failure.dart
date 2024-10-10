@@ -36,9 +36,9 @@ class ServerFailure extends Failure {
 
   static String _handleBadResponse(DioException e) {
     if (e.response?.data != null) {
-      return e.response?.data['message'];
+      return e.response?.data['error']['message'];
     } else {
-      return 'Unexpected error!! Please contact the app creator';
+      return 'Unexpected error!! Please Try again later...';
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:weather/core/models/weather_model/WeatherModel.dart';
 import 'package:weather/core/services/errors/server_failure.dart';
@@ -12,19 +13,18 @@ class WeatherService {
 
   String? errMsg;
 
-  Future<WeatherModel> getWeather(cityName) async {
+  Future<Either<Failure, WeatherModel>> getWeather(cityName) async {
     try {
       Response response = await dio.get(
           "$baseUrl/forecast.json?key=$apiKey&q=$cityName&days=3&aqi=yes&alerts=yes");
       log(response.toString());
 
       WeatherModel weatherModel = WeatherModel.fromJson(response.data);
-      return weatherModel;
+      return right(weatherModel);
     } on DioException catch (e) {
-      var x = ServerFailure.fromDioException(e);
-      throw (x.errMsg);
+      return left(ServerFailure.fromDioException(e));
     } catch (e) {
-      rethrow;
+      return left(ServerFailure("Unexpected error!!"));
     }
   }
 }
