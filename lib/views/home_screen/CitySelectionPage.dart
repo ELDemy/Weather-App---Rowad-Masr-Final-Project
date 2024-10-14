@@ -5,6 +5,7 @@ import 'package:weather/views/home_screen/providers/CityCard.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
 import 'package:weather/core/models/weather_model/WeatherModel.dart';
 
+
 class CitySelectionPage extends StatelessWidget {
   const CitySelectionPage({super.key});
 

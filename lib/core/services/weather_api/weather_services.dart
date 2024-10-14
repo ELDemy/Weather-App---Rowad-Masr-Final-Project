@@ -17,6 +17,7 @@ class WeatherService {
 
   Future<Either<Failure, WeatherModel>> getUserWeather() async {
     Either<LocationFailure, String?> currentCity =
+
     await MyLocation().getCurrentCity();
 
     return currentCity.fold(
@@ -26,6 +27,7 @@ class WeatherService {
   }
 
   Future<Either<Failure, WeatherModel>> getWeatherForCity(String cityName) async {
+
     try {
       Response response = await dio.get(
           "$baseUrl/forecast.json?key=$apiKey&q=$cityName&days=3&aqi=yes&alerts=yes");
@@ -53,4 +55,5 @@ class WeatherService {
     );
   }
 }
+
 
