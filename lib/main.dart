@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:weather/core/services/weather_api/weather_services.dart';
+
 import 'package:weather/views/home_screen/CitySelectionPage.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
@@ -15,12 +17,15 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableProvider(
+
+    return ChangeNotifierProvider(
       create: (context) => CityProvider(),
-      builder: (context, child) => const MaterialApp(
-        home: Scaffold(
-          body: CitySelectionPage(),
+      child: MaterialApp(
+        title: 'Weather App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
+        home: const CitySelectionPage(),
       ),
     );
   }
