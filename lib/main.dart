@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'views/test_features/test_location.dart';
+import 'package:provider/provider.dart';
+import 'package:weather/views/home_screen/CitySelectionPage.dart';
+import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
 void main() {
   runApp(const WeatherApp());
@@ -11,9 +12,14 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: TestLocationView(),
+    return ChangeNotifierProvider(
+      create: (context) => CityProvider(),
+      child: MaterialApp(
+        title: 'Weather App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const CitySelectionPage(),
       ),
     );
   }

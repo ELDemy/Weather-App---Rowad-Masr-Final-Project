@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class CityCard extends StatelessWidget {
   final String cityName;
@@ -17,7 +15,8 @@ class CityCard extends StatelessWidget {
     required this.country,
     required this.temperature,
     required this.highLow,
-    required this.isRemovable,
+    this.isRemovable = false, // افتراضيًا لا يمكن إزالة الكارد
+    // حدث إزالة المدينة (اختياري)
     Key? key,
   }) : super(key: key);
 
@@ -32,7 +31,6 @@ class CityCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Stack(
-          clipBehavior: Clip.none,
           alignment: Alignment.topLeft,
           children: [
             Ink.image(
@@ -44,42 +42,39 @@ class CityCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(14.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        cityName,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      if (cityName == 'My Location')
-                        Lottie.asset(
-                          'assets/animations/greenn.json',
-                          repeat: true,
-                          reverse: true,
-                          height: 25,
-                        ),
-                    ],
+                  Text(
+                    cityName,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   Text(
                     '$adminLevel, $country',
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: const Text(
-                      'Weather Description',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Temperature: $temperature',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    highLow,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -104,7 +99,7 @@ class CityCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border:
-                          Border.all(color: Colors.white.withOpacity(0.13)),
+                              Border.all(color: Colors.white.withOpacity(0.13)),
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
@@ -127,17 +122,12 @@ class CityCard extends StatelessWidget {
                                   fontSize: 28,
                                   fontWeight: FontWeight.w500),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  highLow,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
+                            Text(
+                              highLow,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
