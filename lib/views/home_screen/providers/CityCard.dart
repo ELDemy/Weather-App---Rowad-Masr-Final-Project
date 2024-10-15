@@ -1,27 +1,45 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:weather/core/models/weather_model/WeatherModel.dart';
 
 class CityCard extends StatelessWidget {
   final String cityName;
-  final String adminLevel;
-  final String country;
-  final String temperature;
-  final String highLow;
+  final WeatherModel weatherModel;
   final bool isRemovable;
 
   const CityCard({
     required this.cityName,
-    required this.adminLevel,
-    required this.country,
-    required this.temperature,
-    required this.highLow,
-    this.isRemovable = false, // افتراضيًا لا يمكن إزالة الكارد
-    // حدث إزالة المدينة (اختياري)
+    required this.weatherModel,
+    this.isRemovable = false,
     Key? key,
   }) : super(key: key);
 
+  String _getWeatherImage(String conditionText) {
+    switch (conditionText.toLowerCase()) {
+      case 'sunny':
+        return 'assets/images/01d.jpeg';
+      case 'cloudy':
+        return 'assets/images/02d.jpeg';
+      case 'rain':
+        return 'assets/images/09n.jpeg';
+      case 'snow':
+        return 'assets/images/13n.jpeg';
+      case 'storm':
+        return 'assets/images/04d.jpeg';
+      case 'fog':
+        return 'assets/images/fog.jpeg';
+      case 'partly cloudy':
+        return 'assets/images/50d.jpeg';
+      default:
+        return 'assets/images/01n.jpeg';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    String imagePath =
+    _getWeatherImage(weatherModel.current?.condition?.text ?? 'clear');
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Card(
@@ -34,43 +52,47 @@ class CityCard extends StatelessWidget {
           alignment: Alignment.topLeft,
           children: [
             Ink.image(
-              image: const AssetImage('assets/images/04n.jpeg'),
+              image: AssetImage(imagePath),
               height: 115,
               fit: BoxFit.cover,
               child: InkWell(onTap: () {}),
             ),
             Padding(
-              padding: const EdgeInsets.all(14.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    cityName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 19,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  Lottie.asset(
+                    'assets/animations/greenn.json',
+                    repeat: true,
+                    reverse: true,
+                    height: 20,
                   ),
+                  const SizedBox(height: 5),
+                  Wrap(
+                    children: [
+                      Text(
+                        '${weatherModel.location?.region}, ${weatherModel.location?.country}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
                   Text(
-                    '$adminLevel, $country',
+                    'Condition: ${weatherModel.current?.condition?.text ?? 'N/A'}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   Text(
-                    'Temperature: $temperature',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    highLow,
+                    'Humidity: ${weatherModel.current?.humidity ?? 'N/A'}%',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
@@ -86,20 +108,16 @@ class CityCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  width: 80,
-                  height: 78,
+                  width: 105,
+                  height: 82,
                   color: Colors.transparent,
                   child: Stack(
                     children: [
-                      BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 9.0, sigmaY: 9.0),
-                        child: Container(),
-                      ),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border:
-                              Border.all(color: Colors.white.withOpacity(0.13)),
+                          Border.all(color: Colors.white.withOpacity(0.13)),
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
@@ -111,25 +129,41 @@ class CityCard extends StatelessWidget {
                         ),
                       ),
                       Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              temperature,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Text(
-                              highLow,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                '${weatherModel.current?.tempC}°C',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'H: ${weatherModel.forecast?.forecastday?[0].day?.maxtempC}°',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'L: ${weatherModel.forecast?.forecastday?[0].day?.mintempC}°',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -143,3 +177,4 @@ class CityCard extends StatelessWidget {
     );
   }
 }
+

@@ -8,7 +8,7 @@ class Current {
     this.tempC,
     this.tempF,
     this.isDay,
-    this.condition1,
+    this.condition,
     this.windMph,
     this.windKph,
     this.windDegree,
@@ -41,10 +41,11 @@ class Current {
     tempC = json['temp_c'];
     tempF = json['temp_f'];
     isDay = json['is_day'];
-    condition1 = json['condition1'] != null
-        ? Condition.fromJson(json['condition1'])
+    condition = json['condition'] != null
+        ? Condition.fromJson(json['condition'])
         : null;
     windMph = json['wind_mph'];
+    icon = json['condition']['icon'];
     windKph = json['wind_kph'];
     windDegree = json['wind_degree'];
     windDir = json['wind_dir'];
@@ -71,12 +72,14 @@ class Current {
         ? AirQuality.fromJson(json['air_quality'])
         : null;
   }
+
   num? lastUpdatedEpoch;
   String? lastUpdated;
   num? tempC;
   num? tempF;
   num? isDay;
-  Condition? condition1;
+  Condition? condition;
+  String? icon;
   num? windMph;
   num? windKph;
   num? windDegree;
@@ -109,8 +112,8 @@ class Current {
     map['temp_c'] = tempC;
     map['temp_f'] = tempF;
     map['is_day'] = isDay;
-    if (condition1 != null) {
-      map['condition1'] = condition1?.toJson();
+    if (condition != null) {
+      map['condition'] = condition?.toJson();
     }
     map['wind_mph'] = windMph;
     map['wind_kph'] = windKph;
