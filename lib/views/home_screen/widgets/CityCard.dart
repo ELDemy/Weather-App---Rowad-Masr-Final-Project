@@ -89,7 +89,7 @@ class _CityCardState extends State<CityCard> {
                   Wrap(
                     children: [
                       Text(
-                        '${weatherModel?.location?.region}, ${weatherModel?.location?.country}',
+                        '${weatherModel?.location?.region ?? ''}, ${weatherModel?.location?.country ?? ''}',
                         style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 11,
@@ -100,7 +100,7 @@ class _CityCardState extends State<CityCard> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    'Condition: ${weatherModel?.current?.condition?.text ?? 'N/A'}',
+                    'Condition: ${weatherModel?.current?.condition?.text ?? ''}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
@@ -108,7 +108,7 @@ class _CityCardState extends State<CityCard> {
                     ),
                   ),
                   Text(
-                    'Humidity: ${weatherModel?.current?.humidity ?? 'N/A'}%',
+                    'Humidity: ${weatherModel?.current?.humidity ?? ''}%',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
@@ -152,7 +152,7 @@ class _CityCardState extends State<CityCard> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Text(
-                                '${weatherModel?.current?.tempC}°C',
+                                '${weatherModel?.current?.tempC ?? ''}°C',
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 17,
@@ -162,7 +162,7 @@ class _CityCardState extends State<CityCard> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'H: ${weatherModel?.forecast?.forecastday?[0].day?.maxtempC}°',
+                                    'H: ${weatherModel?.forecast?.forecastday?[0].day?.maxtempC ?? ''}°',
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 13,
@@ -170,7 +170,7 @@ class _CityCardState extends State<CityCard> {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'L: ${weatherModel?.forecast?.forecastday?[0].day?.mintempC}°',
+                                    'L: ${weatherModel?.forecast?.forecastday?[0].day?.mintempC ?? ''}°',
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 13,

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather/core/models/weather_model/WeatherModel.dart';
 import 'package:weather/core/services/errors/failure_class.dart';
 import 'package:weather/core/services/errors/location_failure.dart';
@@ -7,8 +8,12 @@ import 'package:weather/core/services/location/get_location.dart';
 import 'package:weather/core/services/weather_api/weather_services.dart';
 
 class CityProvider with ChangeNotifier {
-  String? userCity;
+  CityProvider() {
+    loadSelectedCities();
+  }
+
   List<String> selectedCities = [];
+  String? userCity;
   bool isLoading = false;
   bool isSearching = false;
 
@@ -17,15 +22,26 @@ class CityProvider with ChangeNotifier {
 
   get filteredCities => null;
 
+  Future<void> loadSelectedCities() async {
+    final prefs = await SharedPreferences.getInstance();
+    selectedCities = prefs.getStringList('selectedCities') ?? [];
+    notifyListeners();
+  }
+
+  Future<void> saveSelectedCities() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('selectedCities', selectedCities);
+  }
+
   Future<void> fetchUserCity(BuildContext context) async {
     try {
-      showMaterialBanner(context, "getting user Location..");
+      _showMaterialBanner(context, "getting user Location..");
       Either<LocationFailure, String?> cityResult =
           await locationService.getCurrentCity();
 
       cityResult.fold(
         (failure) {
-          showSnackBar(context, failure.errMsg);
+          _showSnackBar(context, failure.errMsg);
         },
         (city) async {
           userCity = city;
@@ -33,14 +49,14 @@ class CityProvider with ChangeNotifier {
         },
       );
     } catch (e) {
-      showSnackBar(context, 'Unexpected error: $e');
+      _showSnackBar(context, 'Unexpected error: $e');
     }
     ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
   }
 
   Future<WeatherModel?> updateWeatherModel(
       String cityName, BuildContext context) async {
-    showMaterialBanner(context, "Looking for $cityName");
+    _showMaterialBanner(context, "Looking for $cityName");
     WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
 
     ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
@@ -48,17 +64,24 @@ class CityProvider with ChangeNotifier {
   }
 
   Future<void> addCity(String cityName, BuildContext context) async {
-    WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
-    if (weatherModel != null) {
-      selectedCities.add(cityName);
-      notifyListeners();
+    if (!selectedCities.contains(cityName.toLowerCase())) {
+      WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
+      if (weatherModel != null) {
+        selectedCities.add(cityName.toLowerCase());
+        await saveSelectedCities();
+        notifyListeners();
+      }
+    } else {
+      _showSnackBar(
+          context, "City $cityName is already in the list."); // Notify user
     }
   }
 
-  void removeCity(int index, BuildContext context) {
+  void removeCity(int index, BuildContext context) async {
     String cityName = selectedCities[index];
     selectedCities.removeAt(index);
-    showSnackBar(context, "removed $cityName");
+    _showSnackBar(context, "removed $cityName");
+    await saveSelectedCities();
     notifyListeners();
   }
 
@@ -71,7 +94,7 @@ class CityProvider with ChangeNotifier {
 
       weatherResult.fold(
         (failure) {
-          showSnackBar(context,
+          _showSnackBar(context,
               'Error fetching weather for $cityName: ${failure.errMsg}');
         },
         (weather) {
@@ -79,44 +102,44 @@ class CityProvider with ChangeNotifier {
         },
       );
     } catch (e) {
-      showSnackBar(context, 'Error fetching weather for $cityName');
+      _showSnackBar(context, 'Error fetching weather for $cityName');
     }
 
     return weatherModel;
   }
-}
 
-showSnackBar(BuildContext context, String text) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(text)),
-  );
-}
+  _showSnackBar(BuildContext context, String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(text)),
+    );
+  }
 
-showMaterialBanner(BuildContext context, String text) async {
-  ScaffoldMessenger.of(context).clearMaterialBanners();
-  ScaffoldMessenger.of(context).showMaterialBanner(
-    MaterialBanner(
-      backgroundColor: Colors.transparent,
-      dividerColor: Colors.transparent,
-      content: Row(
-        children: [
-          Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(width: 8),
-          const SizedBox(
-              height: 16,
-              width: 16,
-              child: CircularProgressIndicator(
+  _showMaterialBanner(BuildContext context, String text) async {
+    ScaffoldMessenger.of(context).clearMaterialBanners();
+    ScaffoldMessenger.of(context).showMaterialBanner(
+      MaterialBanner(
+        backgroundColor: Colors.transparent,
+        dividerColor: Colors.transparent,
+        content: Row(
+          children: [
+            Text(
+              text,
+              style: const TextStyle(
                 color: Colors.white,
-                strokeWidth: 2,
-              )),
-        ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            const SizedBox(
+                height: 16,
+                width: 16,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                )),
+          ],
+        ),
+        actions: const [SizedBox()],
       ),
-      actions: const [SizedBox()],
-    ),
-  );
+    );
+  }
 }
