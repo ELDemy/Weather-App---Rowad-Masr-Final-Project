@@ -39,7 +39,7 @@ class CityProvider with ChangeNotifier {
               (failure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(failure.errMsg ?? 'Error fetching weather'),
+                    content: Text(failure.errMsg),
                   ),
                 );
               },

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/core/models/weather_model/WeatherModel.dart';
-import 'package:weather/views/home_screen/providers/CityCard.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
+import 'package:weather/views/home_screen/widgets/CityCard.dart';
 
 class DismissibleCard extends StatefulWidget {
   const DismissibleCard({super.key, required this.index});

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weather/views/home_screen/providers/CityCard.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
+
+import 'CityCard.dart';
 
 class LiveWeatherCard extends StatefulWidget {
   const LiveWeatherCard({
