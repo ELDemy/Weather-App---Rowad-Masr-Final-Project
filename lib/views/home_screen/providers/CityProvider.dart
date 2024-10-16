@@ -8,39 +8,42 @@ import 'package:weather/core/services/weather_api/weather_services.dart';
 
 class CityProvider with ChangeNotifier {
   WeatherModel? myLocationWeather;
-  List<Map<String, dynamic>> selectedCities = [];
+  List<WeatherModel> selectedCities = [];
   bool isLoading = false;
   bool isSearching = false;
 
   WeatherService weatherService = WeatherService();
   MyLocation locationService = MyLocation();
 
+  get filteredCities => null;
+
   Future<void> fetchCurrentLocationWeather(BuildContext context) async {
     try {
       Either<LocationFailure, String?> cityResult =
-          await locationService.getCurrentCity();
+      await locationService.getCurrentCity();
 
       cityResult.fold(
-        (failure) {
+            (failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text(failure.message ?? 'Error fetching location')),
+              content: Text(failure.message ?? 'Error fetching location'),
+            ),
           );
         },
-        (city) async {
+            (city) async {
           if (city != null) {
             Either<Failure, WeatherModel> weatherResult =
-                await weatherService.getWeatherForCity(city);
+            await weatherService.getWeatherForCity(city);
 
             weatherResult.fold(
-              (failure) {
+                  (failure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                      content:
-                          Text(failure.message ?? 'Error fetching weather')),
+                    content: Text(failure.message ?? 'Error fetching weather'),
+                  ),
                 );
               },
-              (weather) {
+                  (weather) {
                 myLocationWeather = weather;
                 notifyListeners();
               },
@@ -59,25 +62,20 @@ class CityProvider with ChangeNotifier {
   Future<void> fetchCityWeather(String cityName, BuildContext context) async {
     try {
       Either<Failure, WeatherModel> weatherResult =
-          await weatherService.getWeatherForCity(cityName);
+      await weatherService.getWeatherForCity(cityName);
 
       weatherResult.fold(
-        (failure) {
+            (failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text(
-                    'Error fetching weather for $cityName: ${failure.message}')),
+              content: Text(
+                'Error fetching weather for $cityName: ${failure.message}',
+              ),
+            ),
           );
         },
-        (weather) {
-          selectedCities.add({
-            'owm_city_name': cityName,
-            'admin_level_1_long': weather.location?.region ?? 'Unknown',
-            'country_long': weather.location?.country ?? 'Unknown',
-            'temp_c': weather.current?.tempC?.toString() ?? 'N/A',
-            'highLow':
-                'H: ${weather.forecast?.forecastday?[0].day?.maxtempC}° L: ${weather.forecast?.forecastday?[0].day?.mintempC}°',
-          });
+            (weather) {
+          selectedCities.add(weather);
           notifyListeners();
         },
       );
@@ -92,4 +90,29 @@ class CityProvider with ChangeNotifier {
     selectedCities.removeAt(index);
     notifyListeners();
   }
+
+  Future<WeatherModel?> getWeatherForCity(String cityName) async {
+    try {
+      Either<Failure, WeatherModel> weatherResult =
+      await weatherService.getWeatherForCity(cityName);
+      return weatherResult.fold(
+            (failure) => null,
+            (weather) => weather,
+      );
+    } catch (e) {
+      print('Error fetching weather for city: $e');
+      return null;
+    }
+  }
+
+  getCityWeather(Map<String, dynamic> city) {}
+
+  void selectCity(city) {}
+
+  void filterCities(String value) {}
+
+  getCurrentWeather() {}
+
+  getWeatherModel(city) {}
 }
+

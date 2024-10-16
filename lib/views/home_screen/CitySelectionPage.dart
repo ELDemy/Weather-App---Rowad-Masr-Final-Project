@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather/core/models/weather_model/WeatherModel.dart';
 import 'package:weather/views/home_screen/providers/CityCard.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
-import 'package:weather/core/models/weather_model/WeatherModel.dart';
-
 
 class CitySelectionPage extends StatelessWidget {
   const CitySelectionPage({super.key});
@@ -14,7 +12,6 @@ class CitySelectionPage extends StatelessWidget {
     final cityProvider = Provider.of<CityProvider>(context);
     final TextEditingController searchController = TextEditingController();
 
-    // Fetch current location weather when the page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (cityProvider.myLocationWeather == null) {
         cityProvider.fetchCurrentLocationWeather(context);
@@ -40,68 +37,77 @@ class CitySelectionPage extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 13),
+              padding: const EdgeInsets.all(16.0),
               child: TextField(
                 controller: searchController,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  hintText: 'Search for a city',
-                  hintStyle: TextStyle(color: Colors.white70),
+                  hintText: 'Search City',
+                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
                   filled: true,
-                  fillColor: Colors.grey[800],
+                  fillColor: Colors.white.withOpacity(0.1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
                   ),
-                  prefixIcon: Icon(Icons.search, color: Colors.white),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.search, color: Colors.white),
+                    onPressed: () {
+                      if (searchController.text.isNotEmpty) {
+
+                        cityProvider.fetchCityWeather(
+                            searchController.text, context);
+                      }
+                    },
+                  ),
                 ),
-                style: const TextStyle(color: Colors.white),
                 onSubmitted: (value) {
-                  cityProvider.fetchCityWeather(value, context);
+
+                  if (value.isNotEmpty) {
+                    cityProvider.fetchCityWeather(value, context);
+                  }
                 },
               ),
             ),
-            const SizedBox(height: 10),
-            // عرض كارد "My Location" في أعلى القائمة
-            CityCard(
-              cityName: 'My Location',
-              adminLevel: cityProvider.myLocationWeather?.location?.region ??
-                  'Loading...',
-              country: cityProvider.myLocationWeather?.location?.country ??
-                  'Loading...',
-              temperature:
-                  cityProvider.myLocationWeather?.current?.tempC?.toString() ??
-                      'N/A',
-              highLow:
-                  'H: ${cityProvider.myLocationWeather?.forecast?.forecastday?[0].day?.maxtempC}° L: ${cityProvider.myLocationWeather?.forecast?.forecastday?[0].day?.mintempC}°',
-              isRemovable: false,
-            ),
-            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
-                itemCount: cityProvider.selectedCities.length,
+                itemCount: cityProvider.selectedCities.length + 1,
                 itemBuilder: (context, index) {
-                  final city = cityProvider.selectedCities[index];
-
-                  return Dismissible(
-                    key: UniqueKey(),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      cityProvider.removeCity(index);
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: const Icon(Icons.delete, color: Colors.white),
-                    ),
-                    child: CityCard(
-                      cityName: city['owm_city_name'],
-                      adminLevel: city['admin_level_1_long'],
-                      country: city['country_long'],
-                      temperature: city['temp_c'],
-                      highLow: city['highLow'],
-                      isRemovable: true,
-                    ),
-                  );
+                  if (index == 0) {
+                    return cityProvider.myLocationWeather != null
+                        ? CityCard(
+                      cityName: "My Location",
+                      weatherModel: cityProvider.myLocationWeather!,
+                      isRemovable: false,
+                    )
+                        : Center(child: CircularProgressIndicator());
+                  } else {
+                    final WeatherModel city =
+                    cityProvider.selectedCities[index - 1];
+                    return Dismissible(
+                      key: Key(city.location?.name ?? 'City'),
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
+                        cityProvider.removeCity(index - 1);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("${city.location?.name} removed"),
+                          ),
+                        );
+                      },
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      child: CityCard(
+                        cityName: city.location?.name ?? 'Unknown City',
+                        weatherModel: city,
+                        isRemovable: true,
+                      ),
+                    );
+                  }
                 },
               ),
             ),
@@ -111,3 +117,4 @@ class CitySelectionPage extends StatelessWidget {
     );
   }
 }
+
