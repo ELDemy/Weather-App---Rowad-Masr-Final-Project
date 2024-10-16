@@ -27,7 +27,7 @@ class CityCard extends StatelessWidget {
       case 'storm':
         return 'assets/images/04d.jpeg';
       case 'fog':
-        return 'assets/images/fog.jpeg';
+        return 'assets/images/fog.png';
       case 'partly cloudy':
         return 'assets/images/50d.jpeg';
       default:
@@ -38,7 +38,7 @@ class CityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String imagePath =
-    _getWeatherImage(weatherModel.current?.condition?.text ?? 'clear');
+        _getWeatherImage(weatherModel.current?.condition?.text ?? 'clear');
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -117,7 +117,7 @@ class CityCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border:
-                          Border.all(color: Colors.white.withOpacity(0.13)),
+                              Border.all(color: Colors.white.withOpacity(0.13)),
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
@@ -177,4 +177,3 @@ class CityCard extends StatelessWidget {
     );
   }
 }
-
