@@ -57,10 +57,12 @@ class CityProvider with ChangeNotifier {
         SnackBar(content: Text('Unexpected error: $e')),
       );
     }
+    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
   }
 
   Future<void> fetchCityWeather(String cityName, BuildContext context) async {
     try {
+      showMaterialBanner(context, "Looking for $cityName");
       Either<Failure, WeatherModel> weatherResult =
           await weatherService.getWeatherForCity(cityName);
 
@@ -79,6 +81,7 @@ class CityProvider with ChangeNotifier {
           notifyListeners();
         },
       );
+      ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error fetching weather for $cityName')),
@@ -120,4 +123,38 @@ class CityProvider with ChangeNotifier {
   getCurrentWeather() {}
 
   getWeatherModel(city) {}
+}
+
+showSnackBar(BuildContext context, String text) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(text)),
+  );
+}
+
+showMaterialBanner(BuildContext context, String text) {
+  ScaffoldMessenger.of(context).showMaterialBanner(
+    MaterialBanner(
+      backgroundColor: Colors.transparent,
+      dividerColor: Colors.transparent,
+      content: Row(
+        children: [
+          Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 8),
+          const SizedBox(
+              height: 16,
+              width: 16,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              )),
+        ],
+      ),
+      actions: const [SizedBox()],
+    ),
+  );
 }
