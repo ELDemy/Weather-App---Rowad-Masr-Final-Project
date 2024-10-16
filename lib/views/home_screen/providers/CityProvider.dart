@@ -8,19 +8,19 @@ import 'package:weather/core/services/location/get_location.dart';
 import 'package:weather/core/services/weather_api/weather_services.dart';
 
 class CityProvider with ChangeNotifier {
+
   CityProvider() {
     loadSelectedCities();
   }
 
   List<String> selectedCities = [];
   String? userCity;
-  bool isLoading = false;
-  bool isSearching = false;
 
   WeatherService weatherService = WeatherService();
   MyLocation locationService = MyLocation();
 
   get filteredCities => null;
+
 
   Future<void> loadSelectedCities() async {
     final prefs = await SharedPreferences.getInstance();
@@ -36,6 +36,7 @@ class CityProvider with ChangeNotifier {
   Future<void> fetchUserCity(BuildContext context) async {
     try {
       _showMaterialBanner(context, "getting user Location..");
+
       Either<LocationFailure, String?> cityResult =
           await locationService.getCurrentCity();
 
@@ -56,7 +57,9 @@ class CityProvider with ChangeNotifier {
 
   Future<WeatherModel?> updateWeatherModel(
       String cityName, BuildContext context) async {
+
     _showMaterialBanner(context, "Looking for $cityName");
+
     WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
 
     ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
@@ -64,6 +67,7 @@ class CityProvider with ChangeNotifier {
   }
 
   Future<void> addCity(String cityName, BuildContext context) async {
+
     if (!selectedCities.contains(cityName.toLowerCase())) {
       WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
       if (weatherModel != null) {
@@ -82,6 +86,7 @@ class CityProvider with ChangeNotifier {
     selectedCities.removeAt(index);
     _showSnackBar(context, "removed $cityName");
     await saveSelectedCities();
+
     notifyListeners();
   }
 
@@ -104,7 +109,6 @@ class CityProvider with ChangeNotifier {
     } catch (e) {
       _showSnackBar(context, 'Error fetching weather for $cityName');
     }
-
     return weatherModel;
   }
 
