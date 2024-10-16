@@ -11,29 +11,8 @@ class CityCard extends StatelessWidget {
     required this.cityName,
     required this.weatherModel,
     this.isRemovable = false,
-    Key? key,
-  }) : super(key: key);
-
-  String _getWeatherImage(String conditionText) {
-    switch (conditionText.toLowerCase()) {
-      case 'sunny':
-        return 'assets/images/01d.jpeg';
-      case 'cloudy':
-        return 'assets/images/02d.jpeg';
-      case 'rain':
-        return 'assets/images/09n.jpeg';
-      case 'snow':
-        return 'assets/images/13n.jpeg';
-      case 'storm':
-        return 'assets/images/04d.jpeg';
-      case 'fog':
-        return 'assets/images/fog.png';
-      case 'partly cloudy':
-        return 'assets/images/50d.jpeg';
-      default:
-        return 'assets/images/01n.jpeg';
-    }
-  }
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -175,5 +154,26 @@ class CityCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getWeatherImage(String conditionText) {
+    switch (conditionText.toLowerCase()) {
+      case 'sunny':
+        return 'assets/images/01d.jpeg';
+      case 'cloudy':
+        return 'assets/images/02d.jpeg';
+      case 'rain':
+        return 'assets/images/09n.jpeg';
+      case 'snow':
+        return 'assets/images/13n.jpeg';
+      case 'storm':
+        return 'assets/images/04d.jpeg';
+      case 'fog':
+        return 'assets/images/fog.png';
+      case 'partly cloudy':
+        return 'assets/images/50d.jpeg';
+      default:
+        return 'assets/images/01n.jpeg';
+    }
   }
 }

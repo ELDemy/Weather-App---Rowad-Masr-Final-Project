@@ -4,20 +4,27 @@ import 'package:weather/core/models/weather_model/WeatherModel.dart';
 import 'package:weather/views/home_screen/providers/CityCard.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
-class CitySelectionPage extends StatelessWidget {
+class CitySelectionPage extends StatefulWidget {
   const CitySelectionPage({super.key});
 
   @override
+  State<CitySelectionPage> createState() => _CitySelectionPageState();
+}
+
+class _CitySelectionPageState extends State<CitySelectionPage> {
+  final TextEditingController searchController = TextEditingController();
+  late CityProvider cityProvider = Provider.of<CityProvider>(context);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (cityProvider.myLocationWeather == null) {
+      cityProvider.fetchCurrentLocationWeather(context);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final cityProvider = Provider.of<CityProvider>(context);
-    final TextEditingController searchController = TextEditingController();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (cityProvider.myLocationWeather == null) {
-        cityProvider.fetchCurrentLocationWeather(context);
-      }
-    });
-
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -52,19 +59,19 @@ class CitySelectionPage extends StatelessWidget {
                   ),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search, color: Colors.white),
-                    onPressed: () {
+                    onPressed: () async {
                       if (searchController.text.isNotEmpty) {
-
-                        cityProvider.fetchCityWeather(
+                        await cityProvider.fetchCityWeather(
                             searchController.text, context);
+                        searchController.clear();
                       }
                     },
                   ),
                 ),
-                onSubmitted: (value) {
-
+                onSubmitted: (value) async {
                   if (value.isNotEmpty) {
-                    cityProvider.fetchCityWeather(value, context);
+                    await cityProvider.fetchCityWeather(value, context);
+                    searchController.clear();
                   }
                 },
               ),
@@ -76,24 +83,19 @@ class CitySelectionPage extends StatelessWidget {
                   if (index == 0) {
                     return cityProvider.myLocationWeather != null
                         ? CityCard(
-                      cityName: "My Location",
-                      weatherModel: cityProvider.myLocationWeather!,
-                      isRemovable: false,
-                    )
+                            cityName: "My Location",
+                            weatherModel: cityProvider.myLocationWeather!,
+                            isRemovable: false,
+                          )
                         : Center(child: CircularProgressIndicator());
                   } else {
                     final WeatherModel city =
-                    cityProvider.selectedCities[index - 1];
+                        cityProvider.selectedCities[index - 1];
                     return Dismissible(
-                      key: Key(city.location?.name ?? 'City'),
+                      key: UniqueKey(),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) {
-                        cityProvider.removeCity(index - 1);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("${city.location?.name} removed"),
-                          ),
-                        );
+                        cityProvider.removeCity(index - 1, context);
                       },
                       background: Container(
                         color: Colors.red,
@@ -117,4 +119,3 @@ class CitySelectionPage extends StatelessWidget {
     );
   }
 }
-

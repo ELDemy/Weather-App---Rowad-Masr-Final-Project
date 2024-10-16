@@ -2,13 +2,7 @@ import 'dart:io'; // Import to use SocketException
 
 import 'package:dio/dio.dart';
 
-abstract class Failure {
-  final String errMsg;
-  const Failure(this.errMsg);
-
-  ///todo
-  get message => null;
-}
+import 'failure_class.dart';
 
 class ServerFailure extends Failure {
   ServerFailure(super.errMsg);
