@@ -34,8 +34,7 @@ class _SearchCityTextFieldState extends State<SearchCityTextField> {
               if (searchController.text.isNotEmpty) {
                 CityProvider cityProvider =
                     Provider.of<CityProvider>(context, listen: false);
-                await cityProvider.fetchCityWeather(
-                    searchController.text, context);
+                await cityProvider.addCity(searchController.text, context);
                 searchController.clear();
               }
             },
@@ -45,7 +44,7 @@ class _SearchCityTextFieldState extends State<SearchCityTextField> {
           if (value.isNotEmpty) {
             CityProvider cityProvider =
                 Provider.of<CityProvider>(context, listen: false);
-            await cityProvider.fetchCityWeather(value, context);
+            await cityProvider.addCity(value, context);
             searchController.clear();
           }
         },

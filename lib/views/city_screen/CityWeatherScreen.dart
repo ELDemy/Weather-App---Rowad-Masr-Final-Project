@@ -3,13 +3,17 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:weather/core/models/weather_model/WeatherModel.dart';
 import 'package:weather/views/city_screen/widgets/WindCard.dart';
 
 class CityWeatherScreen extends StatelessWidget {
+  CityWeatherScreen({super.key, required this.weatherModel});
+
   final cityWeather = [
     {'cityVisi': 30} // Example visibility data for demonstration
   ];
   final int cityIndex = 0;
+  final WeatherModel weatherModel;
 
   @override
   Widget build(BuildContext context) {

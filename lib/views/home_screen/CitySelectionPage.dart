@@ -6,9 +6,14 @@ import 'widgets/dismissible_card.dart';
 import 'widgets/live_weather_card.dart';
 import 'widgets/search_text_field.dart';
 
-class CitySelectionPage extends StatelessWidget {
+class CitySelectionPage extends StatefulWidget {
   const CitySelectionPage({super.key});
 
+  @override
+  State<CitySelectionPage> createState() => _CitySelectionPageState();
+}
+
+class _CitySelectionPageState extends State<CitySelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +47,13 @@ class CitySelectionPage extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.black,
       centerTitle: true,
+      leading: IconButton(
+        onPressed: () {
+          setState(() {});
+        },
+        icon: const Icon(Icons.refresh),
+        color: Colors.white,
+      ),
       title: const Text(
         'Weather App',
         style: TextStyle(
