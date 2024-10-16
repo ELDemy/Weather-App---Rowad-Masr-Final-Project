@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:weather/core/models/weather_model/WeatherModel.dart';
+import 'package:weather/core/services/errors/failure_class.dart';
 import 'package:weather/core/services/errors/location_failure.dart';
 import 'package:weather/core/services/errors/server_failure.dart';
 import 'package:weather/core/services/location/get_location.dart';
@@ -17,17 +16,16 @@ class WeatherService {
 
   Future<Either<Failure, WeatherModel>> getUserWeather() async {
     Either<LocationFailure, String?> currentCity =
-
-    await MyLocation().getCurrentCity();
+        await MyLocation().getCurrentCity();
 
     return currentCity.fold(
-          (failure) => left(failure),
-          (cityName) async => await getWeatherForCity(cityName!),
+      (failure) => left(failure),
+      (cityName) async => await getWeatherForCity(cityName!),
     );
   }
 
-  Future<Either<Failure, WeatherModel>> getWeatherForCity(String cityName) async {
-
+  Future<Either<Failure, WeatherModel>> getWeatherForCity(
+      String cityName) async {
     try {
       Response response = await dio.get(
           "$baseUrl/forecast.json?key=$apiKey&q=$cityName&days=3&aqi=yes&alerts=yes");
@@ -40,20 +38,4 @@ class WeatherService {
       return left(ServerFailure("Unexpected error!!"));
     }
   }
-
-  Future<void> testWeatherService() async {
-    Either<Failure, WeatherModel> userLocationWeather =
-    await getUserWeather();
-
-    userLocationWeather.fold(
-          (failure) {
-        log("Failure Message: ${failure.errMsg}");
-      },
-          (weatherModel) {
-        log("User location is: ${weatherModel.location?.name}");
-      },
-    );
-  }
 }
-
-

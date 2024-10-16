@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather/core/models/weather_model/WeatherModel.dart';
+import 'package:weather/views/city_screen/CityWeatherScreen.dart';
+import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
-class CityCard extends StatelessWidget {
+class CityCard extends StatefulWidget {
   final String cityName;
-  final WeatherModel weatherModel;
   final bool isRemovable;
+  final CityProvider cityProvider;
 
   const CityCard({
+    required this.cityProvider,
     required this.cityName,
-    required this.weatherModel,
     this.isRemovable = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
-  String _getWeatherImage(String conditionText) {
-    switch (conditionText.toLowerCase()) {
-      case 'sunny':
-        return 'assets/images/01d.jpeg';
-      case 'cloudy':
-        return 'assets/images/02d.jpeg';
-      case 'rain':
-        return 'assets/images/09n.jpeg';
-      case 'snow':
-        return 'assets/images/13n.jpeg';
-      case 'storm':
-        return 'assets/images/04d.jpeg';
-      case 'fog':
-        return 'assets/images/fog.jpeg';
-      case 'partly cloudy':
-        return 'assets/images/50d.jpeg';
-      default:
-        return 'assets/images/01n.jpeg';
-    }
+  @override
+  State<CityCard> createState() => _CityCardState();
+}
+
+class _CityCardState extends State<CityCard> {
+  WeatherModel? weatherModel;
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      getWeather();
+    });
+  }
+
+  getWeather() async {
+    weatherModel =
+        await widget.cityProvider.updateWeatherModel(widget.cityName, context);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    String imagePath =
-    _getWeatherImage(weatherModel.current?.condition?.text ?? 'clear');
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Card(
@@ -52,47 +52,63 @@ class CityCard extends StatelessWidget {
           alignment: Alignment.topLeft,
           children: [
             Ink.image(
-              image: AssetImage(imagePath),
+              image: AssetImage(_getWeatherImage()),
               height: 115,
               fit: BoxFit.cover,
-              child: InkWell(onTap: () {}),
+              child: InkWell(onTap: () {
+                if (weatherModel != null) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return CityWeatherScreen(weatherModel: weatherModel!);
+                  }));
+                }
+              }),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Lottie.asset(
-                    'assets/animations/greenn.json',
-                    repeat: true,
-                    reverse: true,
-                    height: 20,
+                  Row(
+                    children: [
+                      Text(
+                        widget.cityName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Lottie.asset(
+                        'assets/animations/greenn.json',
+                        repeat: true,
+                        reverse: true,
+                        height: 20,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 5),
                   Wrap(
                     children: [
                       Text(
-                        '${weatherModel.location?.region}, ${weatherModel.location?.country}',
+                        '${weatherModel?.location?.region}, ${weatherModel?.location?.country}',
                         style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
+                          color: Colors.grey,
+                          fontSize: 11,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 15),
                   Text(
-                    'Condition: ${weatherModel.current?.condition?.text ?? 'N/A'}',
+                    'Condition: ${weatherModel?.current?.condition?.text ?? 'N/A'}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 5),
                   Text(
-                    'Humidity: ${weatherModel.current?.humidity ?? 'N/A'}%',
+                    'Humidity: ${weatherModel?.current?.humidity ?? 'N/A'}%',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
@@ -108,8 +124,8 @@ class CityCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  width: 105,
-                  height: 82,
+                  width: 120,
+                  height: 70,
                   color: Colors.transparent,
                   child: Stack(
                     children: [
@@ -117,7 +133,7 @@ class CityCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border:
-                          Border.all(color: Colors.white.withOpacity(0.13)),
+                              Border.all(color: Colors.white.withOpacity(0.13)),
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
@@ -136,7 +152,7 @@ class CityCard extends StatelessWidget {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Text(
-                                '${weatherModel.current?.tempC}°C',
+                                '${weatherModel?.current?.tempC}°C',
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 17,
@@ -146,7 +162,7 @@ class CityCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'H: ${weatherModel.forecast?.forecastday?[0].day?.maxtempC}°',
+                                    'H: ${weatherModel?.forecast?.forecastday?[0].day?.maxtempC}°',
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 13,
@@ -154,7 +170,7 @@ class CityCard extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'L: ${weatherModel.forecast?.forecastday?[0].day?.mintempC}°',
+                                    'L: ${weatherModel?.forecast?.forecastday?[0].day?.mintempC}°',
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 13,
@@ -176,5 +192,26 @@ class CityCard extends StatelessWidget {
       ),
     );
   }
-}
 
+  String _getWeatherImage() {
+    String conditionText = weatherModel?.current?.condition?.text ?? 'clear';
+    switch (conditionText.toLowerCase()) {
+      case 'sunny':
+        return 'assets/images/01d.jpeg';
+      case 'cloudy':
+        return 'assets/images/02d.jpeg';
+      case 'rain':
+        return 'assets/images/09n.jpeg';
+      case 'snow':
+        return 'assets/images/13n.jpeg';
+      case 'storm':
+        return 'assets/images/04d.jpeg';
+      case 'fog':
+        return 'assets/images/fog.png';
+      case 'partly cloudy':
+        return 'assets/images/50d.jpeg';
+      default:
+        return 'assets/images/01n.jpeg';
+    }
+  }
+}
