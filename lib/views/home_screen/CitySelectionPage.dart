@@ -19,26 +19,23 @@ class _CitySelectionPageState extends State<CitySelectionPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: _appBar(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SearchCityTextField(),
-            Expanded(
-              child: ListView.builder(
-                itemCount:
-                    Provider.of<CityProvider>(context).selectedCities.length +
-                        1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return const LiveWeatherCard();
-                  } else {
-                    return DismissibleCard(index: index - 1);
-                  }
-                },
-              ),
+      body: Column(
+        children: [
+          const SearchCityTextField(),
+          Expanded(
+            child: ListView.builder(
+              itemCount:
+                  Provider.of<CityProvider>(context).selectedCities.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return const LiveWeatherCard();
+                } else {
+                  return DismissibleCard(index: index - 1);
+                }
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

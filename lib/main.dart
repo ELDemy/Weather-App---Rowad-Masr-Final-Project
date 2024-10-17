@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/views/home_screen/CitySelectionPage.dart';
-import 'package:weather/views/home_screen/providers/CityProvider.dart';
+
+import 'views/home_screen/providers/CityProvider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,15 +14,14 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CityProvider(),
-      child: MaterialApp(
-        title: 'Weather App',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const CitySelectionPage(),
+    return MaterialApp(
+      title: 'Weather App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: ChangeNotifierProvider(
+          create: (context) => CityProvider(),
+          child: const CitySelectionPage()),
     );
   }
 }

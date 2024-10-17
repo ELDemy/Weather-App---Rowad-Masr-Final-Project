@@ -13,26 +13,38 @@ class LiveWeatherCard extends StatefulWidget {
 }
 
 class _LiveWeatherCardState extends State<LiveWeatherCard> {
-  late CityProvider cityProvider = Provider.of<CityProvider>(context);
-
+  late CityProvider cityProvider;
+  bool loading = true;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    cityProvider = Provider.of<CityProvider>(context);
+    _getUserLocation();
+  }
+
+  _getUserLocation() {
     if (cityProvider.userCity == null) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        cityProvider.fetchUserCity(context);
+      SchedulerBinding.instance.addPostFrameCallback((_) async {
+        await cityProvider.fetchUserCity(context);
+        setState(() {
+          loading = false;
+        });
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return cityProvider.userCity != null
-        ? CityCard(
-            cityProvider: cityProvider,
-            cityName: cityProvider.userCity!,
-            isRemovable: false,
-          )
-        : const Center(child: CircularProgressIndicator());
+    if (loading) {
+      return const Center(
+          child: CircularProgressIndicator(color: Colors.white));
+    } else {
+      String? cityName = cityProvider.userCity;
+      return CityCard(
+        cityProvider: cityProvider,
+        cityName: cityName ?? '',
+        isRemovable: false,
+      );
+    }
   }
 }

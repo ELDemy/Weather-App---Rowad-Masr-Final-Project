@@ -8,7 +8,6 @@ import 'package:weather/core/services/location/get_location.dart';
 import 'package:weather/core/services/weather_api/weather_services.dart';
 
 class CityProvider with ChangeNotifier {
-
   CityProvider() {
     loadSelectedCities();
   }
@@ -20,7 +19,6 @@ class CityProvider with ChangeNotifier {
   MyLocation locationService = MyLocation();
 
   get filteredCities => null;
-
 
   Future<void> loadSelectedCities() async {
     final prefs = await SharedPreferences.getInstance();
@@ -57,7 +55,6 @@ class CityProvider with ChangeNotifier {
 
   Future<WeatherModel?> updateWeatherModel(
       String cityName, BuildContext context) async {
-
     _showMaterialBanner(context, "Looking for $cityName");
 
     WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
@@ -67,7 +64,6 @@ class CityProvider with ChangeNotifier {
   }
 
   Future<void> addCity(String cityName, BuildContext context) async {
-
     if (!selectedCities.contains(cityName.toLowerCase())) {
       WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
       if (weatherModel != null) {
@@ -125,6 +121,7 @@ class CityProvider with ChangeNotifier {
         backgroundColor: Colors.transparent,
         dividerColor: Colors.transparent,
         content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               text,
