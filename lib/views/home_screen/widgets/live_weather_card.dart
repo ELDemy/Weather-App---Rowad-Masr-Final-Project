@@ -26,11 +26,11 @@ class _LiveWeatherCardState extends State<LiveWeatherCard> {
     if (cityProvider.userCity == null) {
       SchedulerBinding.instance.addPostFrameCallback((_) async {
         await cityProvider.fetchUserCity(context);
-        setState(() {
-          loading = false;
-        });
       });
     }
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
