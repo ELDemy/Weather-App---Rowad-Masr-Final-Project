@@ -57,11 +57,15 @@ class CityWeatherScreen extends StatelessWidget {
                           height: 40,
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          '${weatherModel.current?.tempC}° | ${weatherModel.current?.condition?.text}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
+                        Flexible(
+                          child: Text(
+                            '${weatherModel.current?.tempC}° | ${weatherModel.current?.condition?.text}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                            ),
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
                           ),
                         ),
                       ],
