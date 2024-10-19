@@ -16,12 +16,10 @@ class WeatherApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Weather App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: ChangeNotifierProvider(
-          create: (context) => CityProvider(),
-          child: const CitySelectionPage()),
+        create: (context) => CityProvider(),
+        child: const CitySelectionPage(),
+      ),
     );
   }
 }

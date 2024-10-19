@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather/core/models/weather_model/WeatherModel.dart';
+import 'package:weather/core/utiles/helpers.dart';
 import 'package:weather/views/city_screen/CityWeatherScreen.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
@@ -23,25 +25,43 @@ class CityCard extends StatefulWidget {
 
 class _CityCardState extends State<CityCard> {
   WeatherModel? weatherModel;
+  String lastUpdatedTime = "Loading....";
 
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      getWeather();
+    lookingForWeather();
+  }
+
+  lookingForWeather() async {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      Helpers.showMaterialBanner(context, "Looking for ${widget.cityName}");
+      await updateWeather();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+      setState(() {});
     });
   }
 
-  getWeather() async {
+  updateWeather() async {
     weatherModel =
         await widget.cityProvider.updateWeatherModel(widget.cityName, context);
-    setState(() {});
+    lastUpdatedTime = formatLastUpdated();
+  }
+
+  String formatLastUpdated() {
+    String? updateTime = weatherModel?.current?.lastUpdated;
+    if (updateTime != null) {
+      DateTime parsedDate = DateTime.parse(updateTime);
+      return "${DateFormat('h:mm a').format(parsedDate)} ${weatherModel?.location?.country} time";
+    }
+    return "Can't get Data!!";
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Card(
         color: Colors.transparent,
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -56,6 +76,9 @@ class _CityCardState extends State<CityCard> {
               height: 115,
               fit: BoxFit.cover,
               child: InkWell(onTap: () {
+                setState(() {
+                  updateWeather();
+                });
                 if (weatherModel != null) {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return CityWeatherScreen(weatherModel: weatherModel!);
@@ -78,20 +101,20 @@ class _CityCardState extends State<CityCard> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Lottie.asset(
-                        'assets/animations/greenn.json',
-                        repeat: true,
-                        reverse: true,
-                        height: 20,
-                      ),
+                      !widget.isRemovable
+                          ? Lottie.asset(
+                              'assets/animations/greenn.json',
+                              repeat: true,
+                              reverse: true,
+                              height: 20,
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                   Wrap(
                     children: [
                       Text(
-
                         '${weatherModel?.location?.region ?? ''}, ${weatherModel?.location?.country ?? ''}',
-
                         style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 11,
@@ -102,9 +125,7 @@ class _CityCardState extends State<CityCard> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-
                     'Condition: ${weatherModel?.current?.condition?.text ?? ''}',
-
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
@@ -112,9 +133,7 @@ class _CityCardState extends State<CityCard> {
                     ),
                   ),
                   Text(
-
-                    'Humidity: ${weatherModel?.current?.humidity ?? ''}%',
-
+                    "Last Updated: $lastUpdatedTime",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
@@ -151,47 +170,38 @@ class _CityCardState extends State<CityCard> {
                         ),
                       ),
                       Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-
-                                '${weatherModel?.current?.tempC ?? ''}°C',
-
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-
-                                    'H: ${weatherModel?.forecast?.forecastday?[0].day?.maxtempC ?? ''}°',
-
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-
-                                    'L: ${weatherModel?.forecast?.forecastday?[0].day?.mintempC ?? ''}°',
-
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              '${weatherModel?.current?.tempC ?? ''}°C',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'H: ${weatherModel?.forecast?.forecastday?[0].day?.maxtempC ?? ''}°',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'L: ${weatherModel?.forecast?.forecastday?[0].day?.mintempC ?? ''}°',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ],

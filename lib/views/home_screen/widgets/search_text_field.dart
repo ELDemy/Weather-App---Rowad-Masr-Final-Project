@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather/core/utiles/helpers.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
 class SearchCityTextField extends StatefulWidget {
@@ -34,8 +35,11 @@ class _SearchCityTextFieldState extends State<SearchCityTextField> {
               if (searchController.text.isNotEmpty) {
                 CityProvider cityProvider =
                     Provider.of<CityProvider>(context, listen: false);
+                Helpers.showMaterialBanner(
+                    context, "Looking for ${searchController.text}");
                 await cityProvider.addCity(searchController.text, context);
                 searchController.clear();
+                ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
               }
             },
           ),

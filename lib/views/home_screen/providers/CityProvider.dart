@@ -6,6 +6,7 @@ import 'package:weather/core/services/errors/failure_class.dart';
 import 'package:weather/core/services/errors/location_failure.dart';
 import 'package:weather/core/services/location/get_location.dart';
 import 'package:weather/core/services/weather_api/weather_services.dart';
+import 'package:weather/core/utiles/helpers.dart';
 
 class CityProvider with ChangeNotifier {
   CityProvider() {
@@ -17,8 +18,6 @@ class CityProvider with ChangeNotifier {
 
   WeatherService weatherService = WeatherService();
   MyLocation locationService = MyLocation();
-
-  get filteredCities => null;
 
   Future<void> loadSelectedCities() async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,14 +32,12 @@ class CityProvider with ChangeNotifier {
 
   Future<void> fetchUserCity(BuildContext context) async {
     try {
-      _showMaterialBanner(context, "getting user Location..");
-
       Either<LocationFailure, String?> cityResult =
           await locationService.getCurrentCity();
 
       cityResult.fold(
         (failure) {
-          _showSnackBar(context, failure.errMsg);
+          Helpers.showSnackBar(context, failure.errMsg);
         },
         (city) async {
           userCity = city;
@@ -48,31 +45,27 @@ class CityProvider with ChangeNotifier {
         },
       );
     } catch (e) {
-      _showSnackBar(context, 'Unexpected error: $e');
+      Helpers.showSnackBar(context, 'Unexpected error: $e');
     }
-    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
   }
 
   Future<WeatherModel?> updateWeatherModel(
       String cityName, BuildContext context) async {
-    _showMaterialBanner(context, "Looking for $cityName");
-
     WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
-
-    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
     return weatherModel;
   }
 
   Future<void> addCity(String cityName, BuildContext context) async {
     if (!selectedCities.contains(cityName.toLowerCase())) {
       WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
-      if (weatherModel != null) {
+      if (weatherModel != null &&
+          !selectedCities.contains(cityName.toLowerCase())) {
         selectedCities.add(cityName.toLowerCase());
         await saveSelectedCities();
         notifyListeners();
       }
     } else {
-      _showSnackBar(
+      Helpers.showSnackBar(
           context, "City $cityName is already in the list."); // Notify user
     }
   }
@@ -80,7 +73,7 @@ class CityProvider with ChangeNotifier {
   void removeCity(int index, BuildContext context) async {
     String cityName = selectedCities[index];
     selectedCities.removeAt(index);
-    _showSnackBar(context, "removed $cityName");
+    Helpers.showSnackBar(context, "removed $cityName");
     await saveSelectedCities();
 
     notifyListeners();
@@ -95,7 +88,7 @@ class CityProvider with ChangeNotifier {
 
       weatherResult.fold(
         (failure) {
-          _showSnackBar(context,
+          Helpers.showSnackBar(context,
               'Error fetching weather for $cityName: ${failure.errMsg}');
         },
         (weather) {
@@ -103,44 +96,8 @@ class CityProvider with ChangeNotifier {
         },
       );
     } catch (e) {
-      _showSnackBar(context, 'Error fetching weather for $cityName');
+      Helpers.showSnackBar(context, 'Error fetching weather for $cityName');
     }
     return weatherModel;
-  }
-
-  _showSnackBar(BuildContext context, String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(text)),
-    );
-  }
-
-  _showMaterialBanner(BuildContext context, String text) async {
-    ScaffoldMessenger.of(context).clearMaterialBanners();
-    ScaffoldMessenger.of(context).showMaterialBanner(
-      MaterialBanner(
-        backgroundColor: Colors.transparent,
-        dividerColor: Colors.transparent,
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              text,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 8),
-            const SizedBox(
-                height: 16,
-                width: 16,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
-                )),
-          ],
-        ),
-        actions: const [SizedBox()],
-      ),
-    );
   }
 }

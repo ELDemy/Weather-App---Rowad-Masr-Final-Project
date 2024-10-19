@@ -24,11 +24,12 @@ class _CitySelectionPageState extends State<CitySelectionPage> {
           const SearchCityTextField(),
           Expanded(
             child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               itemCount:
                   Provider.of<CityProvider>(context).selectedCities.length + 1,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return const LiveWeatherCard();
+                  return LiveWeatherCard();
                 } else {
                   return DismissibleCard(index: index - 1);
                 }
