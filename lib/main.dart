@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/views/home_screen/CitySelectionPage.dart';
-
+import 'package:weather/views/splash_view.dart';
 import 'views/home_screen/providers/CityProvider.dart';
 
 void main() {
@@ -14,12 +14,12 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Weather App',
-      home: ChangeNotifierProvider(
-        create: (context) => CityProvider(),
-        child: const CitySelectionPage(),
+    return ChangeNotifierProvider(
+      create: (context) => CityProvider(),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Weather App',
+        home: SplashView(),
       ),
     );
   }
