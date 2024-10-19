@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather/core/models/weather_model/WeatherModel.dart';
 import 'package:weather/core/services/errors/failure_class.dart';
 import 'package:weather/core/services/errors/location_failure.dart';
@@ -21,13 +21,13 @@ class CityProvider with ChangeNotifier {
   get filteredCities => null;
 
   Future<void> loadSelectedCities() async {
-   // final prefs = await SharedPreferences.getInstance();
-   // selectedCities = prefs.getStringList('selectedCities') ?? [];
+    final prefs = await SharedPreferences.getInstance();
+    selectedCities = prefs.getStringList('selectedCities') ?? [];
     notifyListeners();
   }
 
   Future<void> saveSelectedCities() async {
-   // final prefs = await SharedPreferences.getInstance();
+    // final prefs = await SharedPreferences.getInstance();
     //await prefs.setStringList('selectedCities', selectedCities);
   }
 
