@@ -7,6 +7,7 @@ import 'widgets/live_weather_card.dart';
 import 'widgets/search_text_field.dart';
 
 class CitySelectionPage extends StatefulWidget {
+  static const String routeName = "CitySelectionPage";
   const CitySelectionPage({super.key});
 
   @override
