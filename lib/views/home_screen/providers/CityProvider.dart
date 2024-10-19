@@ -27,8 +27,8 @@ class CityProvider with ChangeNotifier {
   }
 
   Future<void> saveSelectedCities() async {
-    // final prefs = await SharedPreferences.getInstance();
-    //await prefs.setStringList('selectedCities', selectedCities);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('selectedCities', selectedCities);
   }
 
   Future<void> fetchUserCity(BuildContext context) async {
