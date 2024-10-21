@@ -21,23 +21,22 @@ class _LiveWeatherCardState extends State<LiveWeatherCard> {
   @override
   void initState() {
     super.initState();
-    _getUserLocation();
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) => _getUserLocation(),
+    );
   }
 
-  _getUserLocation() {
-    SchedulerBinding.instance.addPostFrameCallback(
-      (_) async {
-        if (cityProvider.userCity == null) {
-          Helpers.showMaterialBanner(context, "getting user Location..");
-          await cityProvider.fetchUserCity(context);
-          if (mounted) {
-            ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-          }
-        }
-        loading = false;
-        setState(() {});
-      },
-    );
+  _getUserLocation() async {
+    print(cityProvider.userCity);
+    if (cityProvider.userCity == null) {
+      Helpers.showMaterialBanner(context, "getting user Location..");
+      await cityProvider.fetchUserCity(context);
+      if (mounted) {
+        ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+      }
+    }
+    loading = false;
+    setState(() {});
   }
 
   @override
@@ -47,10 +46,15 @@ class _LiveWeatherCardState extends State<LiveWeatherCard> {
       return const Center(
           child: CircularProgressIndicator(color: Colors.white));
     } else {
-      return CityCard(
-        cityProvider: cityProvider,
-        cityName: cityProvider.userCity ?? '',
-        isRemovable: false,
+      return GestureDetector(
+        onTap: () {
+          _getUserLocation();
+        },
+        child: CityCard(
+          cityProvider: cityProvider,
+          cityName: cityProvider.userCity ?? '',
+          isRemovable: false,
+        ),
       );
     }
   }

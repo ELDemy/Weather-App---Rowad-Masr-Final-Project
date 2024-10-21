@@ -30,17 +30,17 @@ class _CityCardState extends State<CityCard> {
   @override
   void initState() {
     super.initState();
-    lookingForWeather();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      lookingForWeather();
+    });
   }
 
   lookingForWeather() async {
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      Helpers.showMaterialBanner(context, "Looking for ${widget.cityName}");
-      await updateWeather();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-      setState(() {});
-    });
+    Helpers.showMaterialBanner(context, "Looking for ${widget.cityName}");
+    await updateWeather();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+    setState(() {});
   }
 
   updateWeather() async {
@@ -75,16 +75,7 @@ class _CityCardState extends State<CityCard> {
               image: AssetImage(_getWeatherImage()),
               height: 115,
               fit: BoxFit.cover,
-              child: InkWell(onTap: () {
-                setState(() {
-                  updateWeather();
-                });
-                if (weatherModel != null) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return CityWeatherScreen(weatherModel: weatherModel!);
-                  }));
-                }
-              }),
+              child: InkWell(onTap: () => onTap(context)),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -213,6 +204,19 @@ class _CityCardState extends State<CityCard> {
         ),
       ),
     );
+  }
+
+  void onTap(BuildContext context) {
+    if (weatherModel != null) {
+      setState(() {
+        updateWeather();
+      });
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return CityWeatherScreen(weatherModel: weatherModel!);
+      }));
+    } else {
+      lookingForWeather();
+    }
   }
 
   String _getWeatherImage() {

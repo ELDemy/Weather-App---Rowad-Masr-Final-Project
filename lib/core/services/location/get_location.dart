@@ -35,8 +35,7 @@ class MyLocation {
       Position position = await _determinePosition();
       List<Placemark> locationDetails =
           await placemarkFromCoordinates(position.latitude, position.longitude);
-
-      String? city = locationDetails[0].subAdministrativeArea;
+      String? city = locationDetails[0].administrativeArea;
 
       return right(city);
     } on CurrentLocationException catch (e) {

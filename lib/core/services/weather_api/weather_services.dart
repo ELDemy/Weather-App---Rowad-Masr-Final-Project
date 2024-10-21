@@ -12,8 +12,6 @@ class WeatherService {
   String apiKey = "fee25c97813442f58e2195947240108";
   String baseUrl = "http://api.weatherapi.com/v1";
 
-  String? errMsg;
-
   Future<Either<Failure, WeatherModel>> getUserWeather() async {
     Either<LocationFailure, String?> currentCity =
         await MyLocation().getCurrentCity();

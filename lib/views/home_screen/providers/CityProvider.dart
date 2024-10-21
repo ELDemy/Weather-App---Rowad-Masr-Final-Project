@@ -20,14 +20,9 @@ class CityProvider with ChangeNotifier {
   MyLocation locationService = MyLocation();
 
   Future<void> loadSelectedCities() async {
-    final prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     selectedCities = prefs.getStringList('selectedCities') ?? [];
     notifyListeners();
-  }
-
-  Future<void> saveSelectedCities() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('selectedCities', selectedCities);
   }
 
   Future<void> fetchUserCity(BuildContext context) async {
@@ -53,6 +48,11 @@ class CityProvider with ChangeNotifier {
       String cityName, BuildContext context) async {
     WeatherModel? weatherModel = await _fetchWeatherModel(cityName, context);
     return weatherModel;
+  }
+
+  Future<void> saveSelectedCities() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('selectedCities', selectedCities);
   }
 
   Future<void> addCity(String cityName, BuildContext context) async {

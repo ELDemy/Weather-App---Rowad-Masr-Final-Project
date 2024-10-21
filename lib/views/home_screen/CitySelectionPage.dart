@@ -19,7 +19,7 @@ class _CitySelectionPageState extends State<CitySelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: _appBar(),
+      appBar: _appBar(context),
       body: Column(
         children: [
           const SearchCityTextField(),
@@ -30,7 +30,7 @@ class _CitySelectionPageState extends State<CitySelectionPage> {
                   Provider.of<CityProvider>(context).selectedCities.length + 1,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return LiveWeatherCard();
+                  return const LiveWeatherCard();
                 } else {
                   return DismissibleCard(index: index - 1);
                 }
@@ -42,12 +42,14 @@ class _CitySelectionPageState extends State<CitySelectionPage> {
     );
   }
 
-  AppBar _appBar() {
+  AppBar _appBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.black,
       centerTitle: true,
       leading: IconButton(
         onPressed: () {
+          Provider.of<CityProvider>(context, listen: false)
+              .fetchUserCity(context);
           setState(() {});
         },
         icon: const Icon(Icons.refresh),
