@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/views/home_screen/CitySelectionPage.dart';
@@ -37,7 +38,7 @@ class _SplashViewState extends State<SplashView> {
     var mediaQuery = MediaQuery.of(context).size;
     return Scaffold(
       body: Image.asset(
-        "assets/images/splash3.jpg",
+        "assets/images/splash3.png",
         fit: BoxFit.cover,
         height: mediaQuery.height,
         width: mediaQuery.width,

@@ -1,0 +1,19 @@
+flutter_native_splash:
+  color: "#14142B"
+  image: assets/images/launcher_icon.png
+  fullscreen: true
+  android_12:
+    image: assets/images/launcher_icon.png
+    icon_background_color: "#14142B"
+  android: true
+  ios: true
+  web: false
+
+  android_gravity: center
+  ios_content_mode: center
+
+  # Prevent image from being cropped into circle on Android 12
+#  android_12_color_scheme_dark: "#FFFFFF"
+#  android_12_color_scheme_light: "#FFFFFF"
+#  android12_background_color: "#FFFFFF"
+#  android12_icon_shape: none  # This prevents circular cropping
