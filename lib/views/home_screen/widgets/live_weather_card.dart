@@ -7,7 +7,8 @@ import 'package:weather/views/home_screen/providers/CityProvider.dart';
 import 'CityCard.dart';
 
 class LiveWeatherCard extends StatefulWidget {
-  const LiveWeatherCard({super.key});
+  const LiveWeatherCard({super.key, required this.index});
+  final int index;
 
   @override
   State<LiveWeatherCard> createState() => _LiveWeatherCardState();

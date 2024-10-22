@@ -53,7 +53,7 @@ class _CityCardState extends State<CityCard> {
     String? updateTime = weatherModel?.current?.lastUpdated;
     if (updateTime != null) {
       DateTime parsedDate = DateTime.parse(updateTime);
-      return "${DateFormat('h:mm a').format(parsedDate)} ${weatherModel?.location?.country} time";
+      return "${DateFormat('h:mm a').format(parsedDate)} local time";
     }
     return "Can't get Data!!";
   }
@@ -166,7 +166,7 @@ class _CityCardState extends State<CityCard> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              '${weatherModel?.current?.tempC ?? ''}°C',
+                              '${weatherModel?.current?.temp ?? ''}',
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 17,
@@ -176,7 +176,7 @@ class _CityCardState extends State<CityCard> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'H: ${weatherModel?.forecast?.forecastday?[0].day?.maxtempC ?? ''}°',
+                                  'H: ${weatherModel?.forecast?.forecastday?[0].day?.maxTemp ?? ''}°',
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 13,
@@ -184,7 +184,7 @@ class _CityCardState extends State<CityCard> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  'L: ${weatherModel?.forecast?.forecastday?[0].day?.mintempC ?? ''}°',
+                                  'L: ${weatherModel?.forecast?.forecastday?[0].day?.minTemp ?? ''}°',
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 13,

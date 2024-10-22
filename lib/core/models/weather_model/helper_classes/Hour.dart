@@ -1,3 +1,5 @@
+import 'package:weather/core/utiles/constants.dart';
+
 import 'Condition.dart';
 
 class Hour {
@@ -76,6 +78,15 @@ class Hour {
     gustKph = json['gust_kph'];
     uv = json['uv'];
   }
+
+  String? get temp {
+    if (Temp.tempType == TempType.C) {
+      return "$tempC";
+    } else {
+      return "$tempF";
+    }
+  }
+
   num? timeEpoch;
   String? time;
   num? tempC;

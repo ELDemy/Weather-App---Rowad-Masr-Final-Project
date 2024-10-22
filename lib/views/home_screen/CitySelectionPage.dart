@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather/core/utiles/constants.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
 
 import 'widgets/dismissible_card.dart';
@@ -30,7 +31,7 @@ class _CitySelectionPageState extends State<CitySelectionPage> {
                   Provider.of<CityProvider>(context).selectedCities.length + 1,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return const LiveWeatherCard();
+                  return LiveWeatherCard(index: index);
                 } else {
                   return DismissibleCard(index: index - 1);
                 }
@@ -46,21 +47,55 @@ class _CitySelectionPageState extends State<CitySelectionPage> {
     return AppBar(
       backgroundColor: Colors.black,
       centerTitle: true,
-      leading: IconButton(
-        onPressed: () {
-          Provider.of<CityProvider>(context, listen: false)
-              .fetchUserCity(context);
-          setState(() {});
-        },
-        icon: const Icon(Icons.refresh),
-        color: Colors.white,
-      ),
+      leadingWidth: 80,
+      leading: changeTempIcon(),
+      actions: [
+        refreshIcon(context),
+      ],
       title: const Text(
         'Weather App',
         style: TextStyle(
           color: Colors.white,
           fontSize: 16,
           fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  IconButton refreshIcon(BuildContext context) {
+    return IconButton(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      onPressed: () {
+        Provider.of<CityProvider>(context, listen: false)
+            .fetchUserCity(context);
+        setState(() {});
+      },
+      icon: const Icon(Icons.refresh),
+      color: Colors.white,
+    );
+  }
+
+  Widget changeTempIcon() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
+        radius: 24,
+        onTap: () {
+          Temp.tempType == TempType.C
+              ? Temp.tempType = TempType.F
+              : Temp.tempType = TempType.C;
+          setState(() {});
+        },
+        child: Row(
+          children: [
+            const Icon(Icons.thermostat, color: Colors.white),
+            Text(
+              Temp.tempText,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ],
         ),
       ),
     );

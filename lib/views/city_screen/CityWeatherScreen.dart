@@ -59,7 +59,7 @@ class CityWeatherScreen extends StatelessWidget {
                         const SizedBox(width: 8),
                         Flexible(
                           child: Text(
-                            '${weatherModel.current?.tempC}° | ${weatherModel.current?.condition?.text}',
+                            '${weatherModel.current?.temp} | ${weatherModel.current?.condition?.text}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
@@ -72,7 +72,7 @@ class CityWeatherScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'H: ${weatherModel.forecast?.forecastday?[0].day?.maxtempC}° | L: ${weatherModel.forecast?.forecastday?[0].day?.mintempC}°',
+                      'H: ${weatherModel.forecast?.forecastday?[0].day?.maxTemp}° | L: ${weatherModel.forecast?.forecastday?[0].day?.minTemp}°',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -165,8 +165,8 @@ class CityWeatherScreen extends StatelessWidget {
                             final hourTime =
                                 hourData?.time?.split(' ')[1].substring(0, 2) ??
                                     'N/A';
-                            final temperature = hourData?.tempC != null
-                                ? '${hourData!.tempC}°'
+                            final temperature = hourData?.temp != null
+                                ? '${hourData!.temp}°'
                                 : 'N/A';
 
                             String weatherCondition =
@@ -227,24 +227,24 @@ class CityWeatherScreen extends StatelessWidget {
                       const Divider(color: Colors.white, thickness: 1),
                       _buildForecastDay(
                         'Today',
-                        '${weatherModel.forecast?.forecastday?[0].day?.maxtempC ?? 0}°',
-                        '${weatherModel.forecast?.forecastday?[0].day?.mintempC ?? 0}°',
+                        '${weatherModel.forecast?.forecastday?[0].day?.maxTemp ?? 0}°',
+                        '${weatherModel.forecast?.forecastday?[0].day?.minTemp ?? 0}°',
                         _getWeatherIcon(weatherModel
                             .forecast?.forecastday?[0].day?.condition2?.text),
                       ),
                       const Divider(color: Colors.white, thickness: 1),
                       _buildForecastDay(
                         'Tomorrow',
-                        '${weatherModel.forecast?.forecastday?[1].day?.maxtempC ?? 0}°',
-                        '${weatherModel.forecast?.forecastday?[1].day?.mintempC ?? 0}°',
+                        '${weatherModel.forecast?.forecastday?[1].day?.maxTemp ?? 0}°',
+                        '${weatherModel.forecast?.forecastday?[1].day?.minTemp ?? 0}°',
                         _getWeatherIcon(weatherModel
                             .forecast?.forecastday?[1].day?.condition2?.text),
                       ),
                       const Divider(color: Colors.white, thickness: 1),
                       _buildForecastDay(
                         'Day after',
-                        '${weatherModel.forecast?.forecastday?[2].day?.maxtempC ?? 0}°',
-                        '${weatherModel.forecast?.forecastday?[2].day?.mintempC ?? 0}°',
+                        '${weatherModel.forecast?.forecastday?[2].day?.maxTemp ?? 0}°',
+                        '${weatherModel.forecast?.forecastday?[2].day?.minTemp ?? 0}°',
                         _getWeatherIcon(weatherModel
                             .forecast?.forecastday?[2].day?.condition2?.text),
                       ),

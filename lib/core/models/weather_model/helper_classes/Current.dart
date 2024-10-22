@@ -1,3 +1,5 @@
+import 'package:weather/core/utiles/constants.dart';
+
 import 'AirQuality.dart';
 import 'Condition.dart';
 
@@ -34,6 +36,14 @@ class Current {
     this.gustKph,
     this.airQuality,
   });
+
+  String? get temp {
+    if (Temp.tempType == TempType.C) {
+      return "$tempC °C";
+    } else {
+      return "$tempF °F";
+    }
+  }
 
   Current.fromJson(dynamic json) {
     lastUpdatedEpoch = json['last_updated_epoch'];

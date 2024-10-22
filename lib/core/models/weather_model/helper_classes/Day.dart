@@ -1,3 +1,5 @@
+import 'package:weather/core/utiles/constants.dart';
+
 import 'Condition.dart';
 
 class Day {
@@ -48,6 +50,23 @@ class Day {
         : null;
     uv = json['uv'];
   }
+
+  String? get maxTemp {
+    if (Temp.tempType == TempType.C) {
+      return "$maxtempC";
+    } else {
+      return "$maxtempF";
+    }
+  }
+
+  String? get minTemp {
+    if (Temp.tempType == TempType.C) {
+      return "$mintempC";
+    } else {
+      return "$mintempF";
+    }
+  }
+
   num? maxtempC;
   num? maxtempF;
   num? mintempC;
