@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weather/views/splash_view.dart';
 
+import 'views/home_screen/CitySelectionPage.dart';
 import 'views/home_screen/providers/CityProvider.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class WeatherApp extends StatelessWidget {
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Weather App',
-        home: SplashView(),
+        home: CitySelectionPage(),
       ),
     );
   }
