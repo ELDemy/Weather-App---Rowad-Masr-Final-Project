@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather/core/services/notification/notification_service.dart';
 import 'package:weather/core/utiles/constants.dart';
 import 'package:weather/views/home_screen/providers/CityProvider.dart';
+import 'package:workmanager/workmanager.dart';
 
+import '../../core/services/notification/work_manager_services.dart';
 import 'widgets/dismissible_card.dart';
 import 'widgets/live_weather_card.dart';
 import 'widgets/search_text_field.dart';
@@ -51,6 +54,26 @@ class _CitySelectionPageState extends State<CitySelectionPage> {
       leading: changeTempIcon(),
       actions: [
         refreshIcon(context),
+        IconButton(
+            onPressed: () async {
+              await WorkManagerServices().init();
+              Workmanager().registerPeriodicTask(
+                'daily_notification_task',
+                'show_daily_notification',
+                frequency: const Duration(minutes: 15),
+                initialDelay: const Duration(seconds: 10), // Adjust for testing
+              );
+            },
+            icon: const Icon(
+              Icons.notification_add,
+              color: Colors.red,
+            )),
+        IconButton(
+            onPressed: () async {
+              await Workmanager().cancelAll();
+              LocalNotificationService.cancelNotification(0);
+            },
+            icon: const Icon(Icons.cancel))
       ],
       title: const Text(
         'Weather App',
