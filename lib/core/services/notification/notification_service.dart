@@ -28,6 +28,10 @@ class LocalNotificationService {
       onDidReceiveNotificationResponse: onTap,
       onDidReceiveBackgroundNotificationResponse: onTap,
     );
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
   }
 
   //showDailyScheduledNotification
@@ -68,28 +72,32 @@ class LocalNotificationService {
       currentTime.year,
       currentTime.month,
       currentTime.day,
-      currentTime.hour,
-      currentTime.minute + 1,
+      7,
     );
     debugPrint("${scheduleTime.hour}");
     debugPrint("${scheduleTime.minute}");
     debugPrint("${scheduleTime.second}");
 
     if (scheduleTime.isBefore(currentTime)) {
-      scheduleTime = scheduleTime.add(const Duration(minutes: 1));
+      scheduleTime = scheduleTime.add(const Duration(days: 1));
     }
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      1,
-      'Daily Weather Notification',
-      'Your Weather is ${weatherModel?.current?.tempC ?? ""}',
-      // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10)),
-      scheduleTime,
-      details,
-      payload: 'zonedSchedule',
-      androidScheduleMode: AndroidScheduleMode.exact,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
+    if (weatherModel == null) {
+    } else {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        1,
+        'Daily Weather Notification',
+        DateTime.now().hour > 7
+            ? 'Your Weather is ${weatherModel?.forecast?.forecastday?[1].day?.maxTemp}'
+            : 'Your Weather is ${weatherModel?.current?.tempC}',
+        // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10)),
+        scheduleTime,
+        details,
+        payload: 'zonedSchedule',
+        androidScheduleMode: AndroidScheduleMode.exact,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    }
   }
 
   static void cancelNotification(int id) async {
