@@ -85,7 +85,9 @@ class LocalNotificationService {
     } else {
       await flutterLocalNotificationsPlugin.zonedSchedule(
         1,
+
         'Daily Weather Notification',
+        //to get day after if function called in same time
         DateTime.now().hour > 7
             ? 'Your Weather is ${weatherModel?.forecast?.forecastday?[1].day?.maxTemp}'
             : 'Your Weather is ${weatherModel?.current?.tempC}',
