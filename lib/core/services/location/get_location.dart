@@ -33,17 +33,16 @@ class MyLocation {
   Future<Either<LocationFailure, String?>> getCurrentCity() async {
     try {
       Position position = await _determinePosition();
+
       List<Placemark> locationDetails =
           await placemarkFromCoordinates(position.latitude, position.longitude);
-      String? city = locationDetails[0].administrativeArea;
 
+      String? city = locationDetails[0].subAdministrativeArea;
       return right(city);
     } on CurrentLocationException catch (e) {
       return left(LocationFailure(e.cause));
     } catch (e) {
-      return left(
-        LocationFailure("Error!!"),
-      );
+      return left(LocationFailure("Error!!"));
     }
   }
 }

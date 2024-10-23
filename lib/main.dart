@@ -14,12 +14,12 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CityProvider(),
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Weather App',
-        home: CitySelectionPage(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Weather App',
+      home: ChangeNotifierProvider(
+        create: (context) => CityProvider(),
+        child: const CitySelectionPage(),
       ),
     );
   }
