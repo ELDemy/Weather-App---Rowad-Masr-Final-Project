@@ -9,8 +9,8 @@ import 'views/home_screen/providers/CityProvider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initNotification();
   runApp(const WeatherApp());
-  initNotification();
 }
 
 Future<void> initNotification() async {

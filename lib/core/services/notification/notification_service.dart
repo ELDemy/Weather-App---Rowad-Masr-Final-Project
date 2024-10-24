@@ -28,7 +28,7 @@ class LocalNotificationService {
       onDidReceiveNotificationResponse: onTap,
       onDidReceiveBackgroundNotificationResponse: onTap,
     );
-    flutterLocalNotificationsPlugin
+    await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
